@@ -1,0 +1,3 @@
+shows.add(new Show(paraConst[0], paraConst[1], paraConst[2], paraConst[3],
+							paraConst[4], paraConst[5], paraConst[6], paraConst[7], paraConst[8],
+							paraConst[9], paraConst[10], paraConst[11]));
