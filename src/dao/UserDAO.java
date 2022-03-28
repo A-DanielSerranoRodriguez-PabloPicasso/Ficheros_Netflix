@@ -36,10 +36,19 @@ public class UserDAO extends AbstractDAO {
 		return null;
 	}
 
+	public boolean isActive(String identification) {
+		if (mailExists(identification))
+			return checkActive("mail", identification);
+		else if (usernameExists(identification))
+			return checkActive("username", identification);
+
+		return false;
+	}
+
 	public void register(String username, String mail, String passwd) {
 		try {
-			statement.execute("INSERT INTO users(username, mail, passwd) VALUES ('" + username + "','" + mail + "','"
-					+ passwd + "');");
+			statement.execute("INSERT INTO users(username, mail, passwd, active) VALUES ('" + username + "','" + mail
+					+ "','" + passwd + "', 0);");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -106,6 +115,18 @@ public class UserDAO extends AbstractDAO {
 		}
 
 		return null;
+	}
+
+	private boolean checkActive(String what, String identification) {
+		try (ResultSet res = statement
+				.executeQuery("SELECT active FROM users WHERE " + what + "='" + identification + "';")) {
+			if (res.next())
+				return res.getBoolean(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 
 	private ResultSet getUserPasswd(String where, String identification) {

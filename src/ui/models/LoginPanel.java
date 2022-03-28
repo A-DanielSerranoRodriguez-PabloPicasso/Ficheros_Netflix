@@ -15,7 +15,7 @@ public class LoginPanel extends AbstractJPanel {
 	private JLabel lblTitle, lblName, lblPasswd, lblError, lblEmpty;
 	private JTextField txtName;
 	private JPasswordField pwdPasswd;
-	private JButton btnRegister, btnLogin;
+	private JButton btnRegister, btnLogin, btnVerify;
 
 	public LoginPanel() {
 		super();
@@ -36,6 +36,8 @@ public class LoginPanel extends AbstractJPanel {
 
 		btnRegister = new JButton("Registrarse");
 		btnLogin = new JButton("Iniciar sesion");
+		btnVerify = new JButton("Verificar cuenta");
+		btnVerify.setVisible(false);
 
 		txtName = new JTextField(15);
 		txtName.setMaximumSize(new Dimension(200, 25));
@@ -62,6 +64,7 @@ public class LoginPanel extends AbstractJPanel {
 		addCorrectly(hbButtons, btnRegister);
 		addCorrectly(hbButtons, Box.createHorizontalStrut(20));
 		addCorrectly(hbButtons, btnLogin);
+		addCorrectly(hbButtons, btnVerify);
 
 		addCorrectly(vbData, hbName);
 		addCorrectly(vbData, Box.createVerticalStrut(20));
@@ -84,6 +87,10 @@ public class LoginPanel extends AbstractJPanel {
 
 	public JButton getRegisterBtn() {
 		return btnRegister;
+	}
+
+	public JButton getVerifyBtn() {
+		return btnVerify;
 	}
 
 	public JTextField getUsername() {
