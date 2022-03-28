@@ -45,13 +45,112 @@ public class UserDAO extends AbstractDAO {
 		return false;
 	}
 
-	public void register(String username, String mail, String passwd) {
+	public void register(String username, String mail, String passwd, int code) {
 		try {
-			statement.execute("INSERT INTO users(username, mail, passwd, active) VALUES ('" + username + "','" + mail
-					+ "','" + passwd + "', 0);");
+			statement.execute("INSERT INTO users(username, mail, passwd, active, activation_code) VALUES ('" + username
+					+ "','" + mail + "','" + passwd + "', 0, " + code + ");");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public boolean registerCheck(String identification, int code) {
+		if (mailExists(identification)) {
+			try (ResultSet user = getUserByMail(identification)) {
+				user.next();
+				if (user.getInt("activation_code") == code)
+					return true;
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (usernameExists(identification)) {
+			try (ResultSet user = getUserByUsername(identification)) {
+				user.next();
+				if (user.getInt("activation_code") == code)
+					return true;
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	public int getCC(String identification) {
+		if (mailExists(identification)) {
+			try (ResultSet user = getUserByMail(identification)) {
+				user.next();
+				return user.getInt("activation_code");
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (usernameExists(identification)) {
+			try (ResultSet user = getUserByUsername(identification)) {
+				user.next();
+				return user.getInt("activation_code");
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return -1;
+	}
+
+	public void updateCC(String identification, int code) {
+		if (mailExists(identification)) {
+			try {
+				statement.execute(
+						"UPDATE users SET activation_code = " + code + " WHERE mail = '" + identification + "';");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (usernameExists(identification)) {
+			try {
+				statement.execute(
+						"UPDATE users SET activation_code = " + code + " WHERE username = '" + identification + "';");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void updateActiveStatus(String identification) {
+		if (mailExists(identification)) {
+			try {
+				statement.execute("UPDATE users SET active = 1 WHERE mail = '" + identification + "';");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (usernameExists(identification)) {
+			try {
+				statement.execute("UPDATE users SET active = 1 WHERE username = '" + identification + "';");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public String getMail(String username) {
+		try (ResultSet user = getUserByUsername(username)) {
+			user.next();
+			return user.getString("mail");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public String getUsername(String username) {
+		try (ResultSet user = getUserByMail(username)) {
+			user.next();
+			return user.getString("username");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private boolean checkUsernamePasswd(String identification, String passwd) {

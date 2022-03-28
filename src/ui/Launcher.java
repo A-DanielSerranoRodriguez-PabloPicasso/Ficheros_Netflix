@@ -2,7 +2,6 @@ package ui;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,22 +22,6 @@ public class Launcher {
 	private RegisterPanel registerPanel;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Launcher window = new Launcher();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public Launcher() {
@@ -54,6 +37,7 @@ public class Launcher {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		frame.setVisible(true);
 
 		setUIcomponents();
 		setUIbehaviour();
@@ -70,32 +54,55 @@ public class Launcher {
 		loginPanel.getLoginBtn().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				UserDAO uDao = new UserDAO();
 				JLabel[] errs = loginPanel.getErrorLbls();
 				String username = loginPanel.getUsername().getText(),
 						passwd = new String(loginPanel.getPasswd().getPassword());
-				
+
 				if (username.isEmpty() || passwd.isEmpty()) {
 					errs[0].setVisible(true);
 					errs[1].setVisible(false);
 				} else {
-					if (new UserDAO().isActive(username)) {
-						User user = new UserDAO().login(username, passwd);
-						if (user != null) {
+					if (uDao.usernameExists(username) || uDao.mailExists(username)) {
+						if (uDao.isActive(username)) {
+							User user = uDao.login(username, passwd);
+							if (user != null) {
+								errs[0].setVisible(false);
+								errs[1].setVisible(false);
+								System.exit(0);
+							} else {
+								errs[0].setVisible(false);
+								errs[1].setVisible(true);
+							}
+						} else {
+							JOptionPane.showMessageDialog(frame, "Activa tu cuenta");
+							loginPanel.getVerifyBtn().setVisible(true);
+							loginPanel.getLoginBtn().setVisible(false);
 							errs[0].setVisible(false);
 							errs[1].setVisible(false);
-							System.exit(0);
-						} else {
-							errs[0].setVisible(false);
-							errs[1].setVisible(true);
 						}
 					} else {
-						JOptionPane.showMessageDialog(frame, "Activa tu cuenta");
-						loginPanel.getVerifyBtn().setVisible(true);
-						loginPanel.getLoginBtn().setVisible(false);
+						JOptionPane.showMessageDialog(frame, "Usuario no encontrado");
 						errs[0].setVisible(false);
 						errs[1].setVisible(false);
 					}
 				}
+			}
+		});
+
+		loginPanel.getVerifyBtn().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UserDAO uDao = new UserDAO();
+				String text = loginPanel.getUsername().getText();
+
+				if (uDao.usernameExists(text)) {
+					new ConfirmationCode(text, uDao.getMail(text), uDao.getCC(text));
+				} else if (uDao.mailExists(text)) {
+					new ConfirmationCode(uDao.getUsername(text), text, uDao.getCC(text));
+				}
+				loginPanel.getVerifyBtn().setVisible(false);
+				loginPanel.getLoginBtn().setVisible(true);
 			}
 		});
 
@@ -131,7 +138,9 @@ public class Launcher {
 					UserDAO uDao = new UserDAO();
 					if (!uDao.usernameExists(userData[0]) && !uDao.mailExists(userData[1])) {
 						if (userData[2].equals(userData[3])) {
-							uDao.register(userData[0], userData[1], userData[2]);
+							int rndm = (int) ((Math.random() * 100000) + 1);
+
+							uDao.register(userData[0], userData[1], userData[2], rndm);
 
 							errs[0].setVisible(false);
 							errs[1].setVisible(false);
@@ -143,10 +152,8 @@ public class Launcher {
 								registerPanel.getPasswds()[i].setText("");
 							}
 
-							int rndm = (int) ((Math.random() * 100000) + 1);
-
-							new MessageCreator().sendDefaultMessage();
-							new ConfirmationCode(userData[1], rndm);
+							new MessageCreator().sendDefaultMessage(rndm);
+							new ConfirmationCode(userData[0], userData[1], rndm);
 
 							registerPanel.setVisible(false);
 							loginPanel.setVisible(true);

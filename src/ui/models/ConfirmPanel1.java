@@ -23,7 +23,7 @@ public class ConfirmPanel1 extends AbstractJPanel {
 		vbTexts = defaultVB();
 
 		lblTitle = new JLabel("Confirma tu registro");
-		lblText1 = new JLabel("Hemos enviado un correo a " + mail + ".");
+		lblText1 = new JLabel("Hemos enviado un correo a " + mail);
 		lblText2 = new JLabel("Si le ha llegado, continue la verificacion.");
 
 		btnVerify = new JButton("Verificar");

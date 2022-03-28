@@ -17,13 +17,13 @@ public class MessageCreator {
 		this.ses = new SessionProvider().defalutSession();
 	}
 
-	public void sendDefaultMessage() {
+	public void sendDefaultMessage(int rndm) {
 		Message message = new MimeMessage(ses);
 		try {
 			message.setFrom(new InternetAddress("mailfortesting1damdsr@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("dani.serrano00@gmail.com"));
 			message.setSubject("Mail Subject");
-			String msg = "This is my first email using JavaMailer";
+			String msg = "Tu codigo de confirmacion es:\n\n" + rndm + "\n\n";
 
 			MimeBodyPart mimeBodyPart = new MimeBodyPart();
 			mimeBodyPart.setContent(msg, "text/html; charset=utf-8");
