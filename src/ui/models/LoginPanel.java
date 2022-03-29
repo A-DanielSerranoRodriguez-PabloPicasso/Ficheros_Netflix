@@ -15,7 +15,7 @@ public class LoginPanel extends AbstractJPanel {
 	private JLabel lblTitle, lblName, lblPasswd, lblError, lblEmpty;
 	private JTextField txtName;
 	private JPasswordField pwdPasswd;
-	private JButton btnRegister, btnLogin, btnVerify;
+	private JButton btnRegister, btnLogin, btnVerify, btnForgotPasswd;
 
 	public LoginPanel() {
 		super();
@@ -38,6 +38,7 @@ public class LoginPanel extends AbstractJPanel {
 		btnLogin = new JButton("Iniciar sesion");
 		btnVerify = new JButton("Verificar cuenta");
 		btnVerify.setVisible(false);
+		btnForgotPasswd = new JButton("I forgor");
 
 		txtName = new JTextField(15);
 		txtName.setMaximumSize(new Dimension(200, 25));
@@ -78,6 +79,7 @@ public class LoginPanel extends AbstractJPanel {
 		add(hbTitle);
 		addVG();
 		add(vbData);
+		add(btnForgotPasswd);
 		addVG();
 	}
 

@@ -10,10 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import dao.UserDAO;
-import mail.MessageCreator;
 import models.User;
 import ui.models.LoginPanel;
 import ui.models.RegisterPanel;
+import utils.email.EmailHelper;
 
 public class Launcher {
 
@@ -152,7 +152,7 @@ public class Launcher {
 								registerPanel.getPasswds()[i].setText("");
 							}
 
-							new MessageCreator().sendDefaultMessage(rndm);
+							new EmailHelper().sendDefaultMessage(rndm);
 							new ConfirmationCode(userData[0], userData[1], rndm);
 
 							registerPanel.setVisible(false);

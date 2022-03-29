@@ -9,9 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import dao.UserDAO;
-import mail.MessageCreator;
 import ui.models.ConfirmPanel1;
 import ui.models.ConfirmPanel2;
+import utils.email.EmailHelper;
 
 public class ConfirmationCode {
 	private JFrame frame;
@@ -60,7 +60,7 @@ public class ConfirmationCode {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int rndm = (int) ((Math.random() * 100000) + 1);
-				new MessageCreator().sendDefaultMessage(rndm);
+				new EmailHelper().sendDefaultMessage(rndm);
 				new UserDAO().updateCC(mail, rndm);
 			}
 		});
@@ -77,7 +77,7 @@ public class ConfirmationCode {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int rndm = (int) ((Math.random() * 100000) + 1);
-				new MessageCreator().sendDefaultMessage(rndm);
+				new EmailHelper().sendDefaultMessage(rndm);
 				new UserDAO().updateCC(mail, rndm);
 			}
 		});

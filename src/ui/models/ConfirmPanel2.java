@@ -38,15 +38,15 @@ public class ConfirmPanel2 extends AbstractJPanel {
 		addCorrectly(hbButtons, Box.createHorizontalStrut(10));
 		addCorrectly(hbButtons, btnConfirm);
 
-		add(Box.createVerticalGlue());
+		addVG();
 		add(hbText);
 		add(Box.createVerticalStrut(40));
 		add(hbInput);
-		add(Box.createVerticalGlue());
+		addVG();
 		add(hbErrors);
-		add(Box.createVerticalGlue());
+		addVG();
 		add(hbButtons);
-		add(Box.createVerticalGlue());
+		addVG();
 	}
 
 	public JButton[] getButtons() {
@@ -57,7 +57,7 @@ public class ConfirmPanel2 extends AbstractJPanel {
 	public JLabel getErrors() {
 		return lblError;
 	}
-	
+
 	public JTextField getInput() {
 		return txfText;
 	}

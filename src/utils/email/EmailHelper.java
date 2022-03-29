@@ -1,20 +1,25 @@
-package mail;
+package utils.email;
 
-import javax.mail.Message;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.util.Properties;
+
 import javax.mail.Multipart;
-import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-public class MessageCreator {
+import com.mysql.cj.Session;
+import com.mysql.cj.protocol.Message;
+
+public class EmailHelper {
 	private Session ses;
 
-	public MessageCreator() {
+	public EmailHelper() {
 		super();
-		this.ses = new SessionProvider().defalutSession();
+		this.ses = defalutSession();
 	}
 
 	public void sendDefaultMessage(int rndm) {
@@ -40,6 +45,24 @@ public class MessageCreator {
 			e.printStackTrace();
 			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		}
+	}
 
+	private Session defalutSession() {
+		Properties prop = new Properties();
+		prop.put("mail.smtp.auth", true);
+		prop.put("mail.smtp.starttls.enable", "true");
+		prop.put("mail.smtp.host", "smtp.gmail.com");
+		prop.put("mail.smtp.port", "25");
+		prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+//		prop.put("mail.smtp.ssl.protocols","TLSv1.2");
+
+		Session session = Session.getInstance(prop, new Authenticator() {
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication("mailfortesting1damdsr", "WyF8YZhh22B7CDF");
+			}
+		});
+
+		return session;
 	}
 }
