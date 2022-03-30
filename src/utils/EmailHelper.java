@@ -1,25 +1,24 @@
-package utils.email;
+package utils;
 
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 import java.util.Properties;
 
+import javax.mail.Authenticator;
+import javax.mail.Message;
 import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import com.mysql.cj.Session;
-import com.mysql.cj.protocol.Message;
-
 public class EmailHelper {
-	private Session ses;
+	public Session ses;
 
 	public EmailHelper() {
 		super();
-		this.ses = defalutSession();
+		this.ses = defaultSession();
 	}
 
 	public void sendDefaultMessage(int rndm) {
@@ -41,13 +40,11 @@ public class EmailHelper {
 			Transport.send(message);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		}
 	}
 
-	private Session defalutSession() {
+	private Session defaultSession() {
 		Properties prop = new Properties();
 		prop.put("mail.smtp.auth", true);
 		prop.put("mail.smtp.starttls.enable", "true");
@@ -56,13 +53,12 @@ public class EmailHelper {
 		prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 //		prop.put("mail.smtp.ssl.protocols","TLSv1.2");
 
-		Session session = Session.getInstance(prop, new Authenticator() {
+		Session s = Session.getInstance(prop, new Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication("mailfortesting1damdsr", "WyF8YZhh22B7CDF");
 			}
 		});
-
-		return session;
+		return s;
 	}
 }

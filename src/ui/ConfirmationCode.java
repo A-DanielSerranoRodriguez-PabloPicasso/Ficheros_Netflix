@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import dao.UserDAO;
 import ui.models.ConfirmPanel1;
 import ui.models.ConfirmPanel2;
-import utils.email.EmailHelper;
+import utils.EmailHelper;
 
 public class ConfirmationCode {
 	private JFrame frame;

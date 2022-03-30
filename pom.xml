@@ -27,8 +27,8 @@
 		<!-- Disponible hasta 30 de mayo de 2022. Mailjet, mailchip, etc, soluciones-->
 		<dependency>
 			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-			<version>1.6.2</version>
+			<artifactId>jakarta.mail</artifactId>
+			<version>1.6.4</version>
 		</dependency>
 	</dependencies>
 </project>
