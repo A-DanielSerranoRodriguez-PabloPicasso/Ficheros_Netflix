@@ -1,7 +1,6 @@
 package ui;
 
 import java.awt.CardLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,22 +19,6 @@ public class ForgotPasswd {
 	private FpUserPanel panel1;
 	private FpPasswdPanel panel2;
 	private String user;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ForgotPasswd window = new ForgotPasswd();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -112,6 +95,27 @@ public class ForgotPasswd {
 					}
 
 					frame.dispose();
+				} else
+					JOptionPane.showMessageDialog(frame, "Las contras no coinciden");
+			}
+		});
+
+		p2btns[2].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (panel2.passwdMatch()) {
+					EmailHelper emailHelper = new EmailHelper();
+					int rndm = (int) ((Math.random() * 100000) + 1);
+					uDao.updatePasswd(user, new String(panel2.getPasswd()));
+					if (UserDAO.usernameExists(user)) {
+						emailHelper.sendDefaultMessage(uDao.getMail(user), rndm);
+						new ConfirmationCode(user, uDao.getMail(user), rndm);
+					} else {
+						emailHelper.sendDefaultMessage(user, rndm);
+						new ConfirmationCode(uDao.getUsername(user), user, rndm);
+					}
+					frame.dispose();
+
 				} else
 					JOptionPane.showMessageDialog(frame, "Las contras no coinciden");
 			}
