@@ -7,7 +7,7 @@ import java.sql.Statement;
 import models.User;
 
 public class UserDAO extends AbstractDAO {
-	private Statement statement;
+	private static Statement statement;
 
 	public UserDAO() {
 		super();
@@ -99,21 +99,11 @@ public class UserDAO extends AbstractDAO {
 		return -1;
 	}
 
-	public void updateCC(String identification, int code) {
-		if (mailExists(identification)) {
-			try {
-				statement.execute(
-						"UPDATE users SET activation_code = " + code + " WHERE mail = '" + identification + "';");
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		} else if (usernameExists(identification)) {
-			try {
-				statement.execute(
-						"UPDATE users SET activation_code = " + code + " WHERE username = '" + identification + "';");
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+	public static void updateCC(String mail, int code) {
+		try {
+			statement.execute("UPDATE users SET activation_code = " + code + " WHERE mail = '" + mail + "';");
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -127,6 +117,24 @@ public class UserDAO extends AbstractDAO {
 		} else if (usernameExists(identification)) {
 			try {
 				statement.execute("UPDATE users SET active = 1 WHERE username = '" + identification + "';");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void updatePasswd(String identification, String passwd) {
+		if (mailExists(identification)) {
+			try {
+				statement.execute("UPDATE users SET passwd = '" + passwd + "', active = 0 WHERE mail = '"
+						+ identification + "';");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (usernameExists(identification)) {
+			try {
+				statement.execute("UPDATE users SET passwd = '" + passwd + "', active = 0 WHERE username = '"
+						+ identification + "';");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -183,7 +191,7 @@ public class UserDAO extends AbstractDAO {
 		return false;
 	}
 
-	public boolean usernameExists(String username) {
+	public static boolean usernameExists(String username) {
 		try (ResultSet user = isUser("username", username)) {
 			if (user.next())
 				return true;
@@ -194,7 +202,7 @@ public class UserDAO extends AbstractDAO {
 		return false;
 	}
 
-	public boolean mailExists(String mail) {
+	public static boolean mailExists(String mail) {
 		try (ResultSet user = isUser("mail", mail)) {
 			if (user.next())
 				return true;
@@ -205,7 +213,11 @@ public class UserDAO extends AbstractDAO {
 		return false;
 	}
 
-	private ResultSet isUser(String what, String identification) {
+	public boolean userExists(String identification) {
+		return mailExists(identification) || usernameExists(identification);
+	}
+
+	private static ResultSet isUser(String what, String identification) {
 		try {
 			return statement
 					.executeQuery("SELECT " + what + " FROM users WHERE " + what + "='" + identification + "';");

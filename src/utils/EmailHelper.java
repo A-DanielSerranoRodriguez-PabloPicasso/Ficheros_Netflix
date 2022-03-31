@@ -13,18 +13,23 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import dao.UserDAO;
+
 public class EmailHelper {
-	public Session ses;
+	public static Session ses;
+	public static String mail;
 
 	public EmailHelper() {
 		super();
-		this.ses = defaultSession();
+		EmailHelper.ses = defaultSession();
 	}
 
-	public void sendDefaultMessage(int rndm) {
+	public static void sendDefaultMessage(String mail, int rndm) {
 		Message message = new MimeMessage(ses);
 		try {
 			message.setFrom(new InternetAddress("mailfortesting1damdsr@gmail.com"));
+			// Here would be *mail* if this were to be implemented in a real environment,
+			// in *setREcipients(to, _mail_)*
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("dani.serrano00@gmail.com"));
 			message.setSubject("Mail Subject");
 			String msg = "Tu codigo de confirmacion es:\n\n" + rndm + "\n\n";
@@ -38,6 +43,7 @@ public class EmailHelper {
 			message.setContent(multipart);
 
 			Transport.send(message);
+			UserDAO.updateCC(mail, rndm);
 
 		} catch (Exception e) {
 			e.printStackTrace();

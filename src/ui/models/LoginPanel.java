@@ -49,31 +49,31 @@ public class LoginPanel extends AbstractJPanel {
 		lblEmpty.setVisible(false);
 		lblError.setVisible(false);
 
-		addCorrectly(hbTitle, lblTitle);
+		addToBox(hbTitle, lblTitle);
 
-		addCorrectly(hbName, lblName);
-		addCorrectly(hbName, Box.createHorizontalStrut(20));
-		addCorrectly(hbName, txtName);
+		addToBox(hbName, lblName);
+		addToBox(hbName, Box.createHorizontalStrut(20));
+		addToBox(hbName, txtName);
 
-		addCorrectly(hbPasswd, lblPasswd);
-		addCorrectly(hbPasswd, Box.createHorizontalStrut(20));
-		addCorrectly(hbPasswd, pwdPasswd);
+		addToBox(hbPasswd, lblPasswd);
+		addToBox(hbPasswd, Box.createHorizontalStrut(20));
+		addToBox(hbPasswd, pwdPasswd);
 
-		addCorrectly(hbError, lblError);
-		addCorrectly(hbError, lblEmpty);
+		addToBox(hbError, lblError);
+		addToBox(hbError, lblEmpty);
 
-		addCorrectly(hbButtons, btnRegister);
-		addCorrectly(hbButtons, Box.createHorizontalStrut(20));
-		addCorrectly(hbButtons, btnLogin);
-		addCorrectly(hbButtons, btnVerify);
+		addToBox(hbButtons, btnRegister);
+		addToBox(hbButtons, Box.createHorizontalStrut(20));
+		addToBox(hbButtons, btnLogin);
+		addToBox(hbButtons, btnVerify);
 
-		addCorrectly(vbData, hbName);
-		addCorrectly(vbData, Box.createVerticalStrut(20));
-		addCorrectly(vbData, hbPasswd);
-		addCorrectly(vbData, Box.createVerticalStrut(40));
-		addCorrectly(vbData, hbError);
-		addCorrectly(vbData, Box.createVerticalStrut(20));
-		addCorrectly(vbData, hbButtons);
+		addToBox(vbData, hbName);
+		addToBox(vbData, Box.createVerticalStrut(20));
+		addToBox(vbData, hbPasswd);
+		addToBox(vbData, Box.createVerticalStrut(40));
+		addToBox(vbData, hbError);
+		addToBox(vbData, Box.createVerticalStrut(20));
+		addToBox(vbData, hbButtons);
 
 		addVG();
 		add(hbTitle);
@@ -93,6 +93,10 @@ public class LoginPanel extends AbstractJPanel {
 
 	public JButton getVerifyBtn() {
 		return btnVerify;
+	}
+	
+	public JButton getForgotPasswd() {
+		return btnForgotPasswd;
 	}
 
 	public JTextField getUsername() {

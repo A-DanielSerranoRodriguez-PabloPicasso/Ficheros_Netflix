@@ -29,18 +29,18 @@ public class ConfirmPanel1 extends AbstractJPanel {
 		btnVerify = new JButton("Verificar");
 		btnResend = new JButton("Re-enviar codigo");
 
-		addCorrectly(hbTitle, lblTitle);
-		addCorrectly(hbText1, lblText1);
-		addCorrectly(hbText2, lblText2);
-		addCorrectly(hbButtons, btnResend);
-		addCorrectly(hbButtons, Box.createHorizontalStrut(10));
-		addCorrectly(hbButtons, btnVerify);
+		addToBox(hbTitle, lblTitle);
+		addToBox(hbText1, lblText1);
+		addToBox(hbText2, lblText2);
+		addToBox(hbButtons, btnResend);
+		addToBox(hbButtons, Box.createHorizontalStrut(10));
+		addToBox(hbButtons, btnVerify);
 
-		addCorrectly(vbTexts, hbText1);
-		addCorrectly(vbTexts, Box.createVerticalStrut(15));
-		addCorrectly(vbTexts, hbText2);
+		addToBox(vbTexts, hbText1);
+		addToBox(vbTexts, Box.createVerticalStrut(15));
+		addToBox(vbTexts, hbText2);
 
-		addCorrectly(hbTexts, vbTexts);
+		addToBox(hbTexts, vbTexts);
 
 		addVG();
 		add(hbTitle);

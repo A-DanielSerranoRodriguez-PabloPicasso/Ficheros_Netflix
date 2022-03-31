@@ -58,43 +58,43 @@ public class RegisterPanel extends AbstractJPanel {
 		lblUserExists.setVisible(false);
 		lblPasswdNotMatch.setVisible(false);
 
-		addCorrectly(hbTitle, lblTitle);
+		addToBox(hbTitle, lblTitle);
 
-		addCorrectly(hbName, lblName);
-		addCorrectly(hbName, Box.createHorizontalStrut(87));
-		addCorrectly(hbName, txtName);
+		addToBox(hbName, lblName);
+		addToBox(hbName, Box.createHorizontalStrut(87));
+		addToBox(hbName, txtName);
 
-		addCorrectly(hbMail, lblMail);
-		addCorrectly(hbMail, Box.createHorizontalStrut(10));
-		addCorrectly(hbMail, txtMail);
+		addToBox(hbMail, lblMail);
+		addToBox(hbMail, Box.createHorizontalStrut(10));
+		addToBox(hbMail, txtMail);
 
-		addCorrectly(hbPasswd, lblPasswd);
-		addCorrectly(hbPasswd, Box.createHorizontalStrut(93));
-		addCorrectly(hbPasswd, pwdPasswd);
+		addToBox(hbPasswd, lblPasswd);
+		addToBox(hbPasswd, Box.createHorizontalStrut(93));
+		addToBox(hbPasswd, pwdPasswd);
 
-		addCorrectly(hbConfirmPwd, lblConfirmPwd);
-		addCorrectly(hbConfirmPwd, Box.createHorizontalStrut(43));
-		addCorrectly(hbConfirmPwd, pwdConfirmPwd);
+		addToBox(hbConfirmPwd, lblConfirmPwd);
+		addToBox(hbConfirmPwd, Box.createHorizontalStrut(43));
+		addToBox(hbConfirmPwd, pwdConfirmPwd);
 
-		addCorrectly(hbError, lblEmpty);
-		addCorrectly(hbError, lblUserExists);
-		addCorrectly(hbError, lblPasswdNotMatch);
+		addToBox(hbError, lblEmpty);
+		addToBox(hbError, lblUserExists);
+		addToBox(hbError, lblPasswdNotMatch);
 
-		addCorrectly(hbButtons, btnCancel);
-		addCorrectly(hbButtons, Box.createHorizontalStrut(30));
-		addCorrectly(hbButtons, btnRegister);
+		addToBox(hbButtons, btnCancel);
+		addToBox(hbButtons, Box.createHorizontalStrut(30));
+		addToBox(hbButtons, btnRegister);
 
-		addCorrectly(vbData, hbName);
-		addCorrectly(vbData, Box.createVerticalStrut(20));
-		addCorrectly(vbData, hbMail);
-		addCorrectly(vbData, Box.createVerticalStrut(20));
-		addCorrectly(vbData, hbPasswd);
-		addCorrectly(vbData, Box.createVerticalStrut(20));
-		addCorrectly(vbData, hbConfirmPwd);
-		addCorrectly(vbData, Box.createVerticalStrut(40));
-		addCorrectly(vbData, hbError);
-		addCorrectly(vbData, Box.createVerticalStrut(20));
-		addCorrectly(vbData, hbButtons);
+		addToBox(vbData, hbName);
+		addToBox(vbData, Box.createVerticalStrut(20));
+		addToBox(vbData, hbMail);
+		addToBox(vbData, Box.createVerticalStrut(20));
+		addToBox(vbData, hbPasswd);
+		addToBox(vbData, Box.createVerticalStrut(20));
+		addToBox(vbData, hbConfirmPwd);
+		addToBox(vbData, Box.createVerticalStrut(40));
+		addToBox(vbData, hbError);
+		addToBox(vbData, Box.createVerticalStrut(20));
+		addToBox(vbData, hbButtons);
 
 		addVG();
 		add(hbTitle);

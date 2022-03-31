@@ -13,6 +13,7 @@ import dao.UserDAO;
 import models.User;
 import ui.models.LoginPanel;
 import ui.models.RegisterPanel;
+import utils.EmailHelper;
 
 public class Launcher {
 
@@ -62,7 +63,7 @@ public class Launcher {
 					errs[0].setVisible(true);
 					errs[1].setVisible(false);
 				} else {
-					if (uDao.usernameExists(username) || uDao.mailExists(username)) {
+					if (uDao.userExists(username)) {
 						if (uDao.isActive(username)) {
 							User user = uDao.login(username, passwd);
 							if (user != null) {
@@ -95,9 +96,9 @@ public class Launcher {
 				UserDAO uDao = new UserDAO();
 				String text = loginPanel.getUsername().getText();
 
-				if (uDao.usernameExists(text)) {
+				if (UserDAO.usernameExists(text)) {
 					new ConfirmationCode(text, uDao.getMail(text), uDao.getCC(text));
-				} else if (uDao.mailExists(text)) {
+				} else if (UserDAO.mailExists(text)) {
 					new ConfirmationCode(uDao.getUsername(text), text, uDao.getCC(text));
 				}
 				loginPanel.getVerifyBtn().setVisible(false);
@@ -106,6 +107,14 @@ public class Launcher {
 		});
 
 		loginPanel.getRegisterBtn().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				loginPanel.setVisible(false);
+				registerPanel.setVisible(true);
+			}
+		});
+
+		loginPanel.getForgotPasswd().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				loginPanel.setVisible(false);
@@ -135,7 +144,7 @@ public class Launcher {
 					errs[2].setVisible(false);
 				} else {
 					UserDAO uDao = new UserDAO();
-					if (!uDao.usernameExists(userData[0]) && !uDao.mailExists(userData[1])) {
+					if (!UserDAO.usernameExists(userData[0]) && !UserDAO.mailExists(userData[1])) {
 						if (userData[2].equals(userData[3])) {
 							int rndm = (int) ((Math.random() * 100000) + 1);
 
@@ -151,7 +160,7 @@ public class Launcher {
 								registerPanel.getPasswds()[i].setText("");
 							}
 
-							new utils.EmailHelper().sendDefaultMessage(rndm);
+							EmailHelper.sendDefaultMessage(userData[1], rndm);
 							new ConfirmationCode(userData[0], userData[1], rndm);
 
 							registerPanel.setVisible(false);

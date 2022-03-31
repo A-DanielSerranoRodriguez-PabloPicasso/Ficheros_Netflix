@@ -27,7 +27,7 @@ public abstract class AbstractJPanel extends JPanel {
 		return vb;
 	}
 
-	protected void addCorrectly(Box box, Component toAdd) {
+	protected void addToBox(Box box, Component toAdd) {
 		box.add(toAdd, box.getComponentCount() - 1);
 	}
 

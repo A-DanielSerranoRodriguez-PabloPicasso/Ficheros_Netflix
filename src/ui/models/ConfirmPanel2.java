@@ -31,12 +31,12 @@ public class ConfirmPanel2 extends AbstractJPanel {
 		btnResend = new JButton("Re-enviar codigo");
 		btnConfirm = new JButton("Confirmar");
 
-		addCorrectly(hbText, lblText);
-		addCorrectly(hbInput, txfText);
-		addCorrectly(hbErrors, lblError);
-		addCorrectly(hbButtons, btnResend);
-		addCorrectly(hbButtons, Box.createHorizontalStrut(10));
-		addCorrectly(hbButtons, btnConfirm);
+		addToBox(hbText, lblText);
+		addToBox(hbInput, txfText);
+		addToBox(hbErrors, lblError);
+		addToBox(hbButtons, btnResend);
+		addToBox(hbButtons, Box.createHorizontalStrut(10));
+		addToBox(hbButtons, btnConfirm);
 
 		addVG();
 		add(hbText);
