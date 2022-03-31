@@ -102,12 +102,13 @@ public class ForgotPasswd {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (panel2.passwdMatch()) {
+					EmailHelper emailHelper = new EmailHelper();
 					int rndm = (int) ((Math.random() * 100000) + 1);
 					uDao.updatePasswd(user, new String(panel2.getPasswd()));
 					if (UserDAO.usernameExists(user)) {
-						EmailHelper.sendDefaultMessage(uDao.getMail(user), rndm);
+						emailHelper.sendDefaultMessage(uDao.getMail(user), rndm);
 					} else {
-						EmailHelper.sendDefaultMessage(user, rndm);
+						emailHelper.sendDefaultMessage(user, rndm);
 					}
 
 					frame.dispose();

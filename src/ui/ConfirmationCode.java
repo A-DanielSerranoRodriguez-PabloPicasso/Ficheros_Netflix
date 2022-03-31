@@ -60,7 +60,7 @@ public class ConfirmationCode {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int rndm = (int) ((Math.random() * 100000) + 1);
-				EmailHelper.sendDefaultMessage(mail, rndm);
+				new EmailHelper().sendDefaultMessage(mail, rndm);
 			}
 		});
 
@@ -76,7 +76,7 @@ public class ConfirmationCode {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int rndm = (int) ((Math.random() * 100000) + 1);
-				EmailHelper.sendDefaultMessage(mail, rndm);
+				new EmailHelper().sendDefaultMessage(mail, rndm);
 			}
 		});
 

@@ -160,7 +160,7 @@ public class Launcher {
 								registerPanel.getPasswds()[i].setText("");
 							}
 
-							EmailHelper.sendDefaultMessage(userData[1], rndm);
+							new EmailHelper().sendDefaultMessage(userData[1], rndm);
 							new ConfirmationCode(userData[0], userData[1], rndm);
 
 							registerPanel.setVisible(false);

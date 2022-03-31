@@ -16,15 +16,15 @@ import javax.mail.internet.MimeMultipart;
 import dao.UserDAO;
 
 public class EmailHelper {
-	public static Session ses;
+	public Session ses;
 	public static String mail;
 
 	public EmailHelper() {
 		super();
-		EmailHelper.ses = defaultSession();
+		this.ses = defaultSession();
 	}
 
-	public static void sendDefaultMessage(String mail, int rndm) {
+	public void sendDefaultMessage(String mail, int rndm) {
 		Message message = new MimeMessage(ses);
 		try {
 			message.setFrom(new InternetAddress("mailfortesting1damdsr@gmail.com"));
