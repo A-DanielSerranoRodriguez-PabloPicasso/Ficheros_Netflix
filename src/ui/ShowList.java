@@ -5,14 +5,18 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
 import models.User;
 import ui.models.ShowInfoPanel;
 import ui.models.ShowListPanel;
+import utils.ShowFilter;
 
 public class ShowList {
 	private User usuario;
@@ -20,6 +24,7 @@ public class ShowList {
 	private JFrame frame;
 	private ShowListPanel showPanel;
 	private ShowInfoPanel showInfo;
+	private JComboBox comboBox;
 
 	/**
 	 * Launch the application.
@@ -64,12 +69,28 @@ public class ShowList {
 		frame.getContentPane().add(showPanel, "name_14215655555075");
 		this.showInfo = new ShowInfoPanel();
 		frame.getContentPane().add(showInfo);
+
+		comboBox = new JComboBox();
+		comboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+			}
+		});
+		frame.getContentPane().add(comboBox, "name_5554178004500");
 	}
 
 	private void setUIbehaviour() {
 		JButton[] btnsNav = showPanel.getBtnsNav(), btnsMore = showPanel.getBtnsShows();
 		JButton btnFilter = showPanel.getBtnFilter();
 		JCheckBox[] chksFav = showPanel.getChksFav();
+
+		showPanel.getJcbFilter().addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (showPanel.getJcbFilter().getSelectedItem() == ShowFilter.Nada)
+					showPanel.getTxtFilter().setEnabled(false);
+				else
+					showPanel.getTxtFilter().setEnabled(true);
+			}
+		});
 
 		btnsNav[0].addActionListener(new ActionListener() {
 			@Override
@@ -90,7 +111,8 @@ public class ShowList {
 		btnFilter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Dicks");
+				showPanel.setFilter((ShowFilter) showPanel.getJcbFilter().getSelectedItem(),
+						showPanel.getTxtFilter().getText());
 			}
 		});
 

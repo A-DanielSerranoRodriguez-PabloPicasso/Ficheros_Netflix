@@ -1,5 +1,7 @@
 package ui.models;
 
+import java.awt.Dimension;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
@@ -8,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 import dao.ShowsDAO;
 import models.Show;
@@ -18,7 +21,10 @@ import utils.ShowFilter;
 @SuppressWarnings("serial")
 public class ShowListPanel extends AbstractJPanel {
 	private User user;
-	private int page, totalPages, pos1, pos2, pos3, pos4, pos5;
+	private ShowsDAO sDao;
+	private String textFilter;
+	private int page, totalPages, size, pos1, pos2, pos3, pos4, pos5;
+	private ShowFilter filter = ShowFilter.Nada;
 
 	private Box hbUpper, hbNav, hbOpt, hbMid, hbBottom;
 	private Box vbUpper, vbMid;
@@ -27,15 +33,18 @@ public class ShowListPanel extends AbstractJPanel {
 	private Box hbS1T, hbS2T, hbS3T, hbS4T, hbS5T, hbS1D, hbS2D, hbS3D, hbS4D, hbS5D, hbS1M, hbS2M, hbS3M, hbS4M, hbS5M;
 	private JLabel lblTitle, lblShows, lblFilter;
 	private JComboBox<ShowFilter> jcbFilter;
+	private JTextField txtFilter;
 	private JButton btnFilter, btnNextP, btnPreviousP;
 	private JButton btnMore1, btnMore2, btnMore3, btnMore4, btnMore5;
 	private JCheckBox chkFav1, chkFav2, chkFav3, chkFav4, chkFav5;
 
 	public ShowListPanel(User user) {
-		new ShowsDAO().fillShows(0);
+		sDao = new ShowsDAO();
+		sDao.fillShows(filter, null, 0);
 		this.user = user;
 		this.page = 0;
-		this.totalPages = Almacen.shows.size() / 8 + 1;
+		this.size = Almacen.shows.size();
+		this.totalPages = size / 8 + 1;
 
 		ImageIcon plus = new ImageIcon("resources/img/plus.png");
 		hbUpper = defaultHB();
@@ -56,9 +65,13 @@ public class ShowListPanel extends AbstractJPanel {
 		btnFilter = new JButton(new ImageIcon("resources/img/filter.png"));
 		btnFilter.setBorder(BorderFactory.createEmptyBorder());
 		btnFilter.setContentAreaFilled(false);
+		txtFilter = new JTextField(15);
+		txtFilter.setMaximumSize(new Dimension(100, 25));
+		txtFilter.setEnabled(false);
 		addToBox(hbOpt, lblShows);
 		addToBox(hbOpt, lblFilter);
 		addToBox(hbOpt, jcbFilter);
+		addToBox(hbOpt, txtFilter);
 		addToBox(hbOpt, btnFilter);
 		addToBox(vbUpper, hbOpt);
 
@@ -101,7 +114,7 @@ public class ShowListPanel extends AbstractJPanel {
 //		btnMore3 = new JButton("tres");
 //		btnMore4 = new JButton("Cuat");
 //		btnMore5 = new JButton("cinc");
-		
+
 		btnMore1 = new JButton(plus);
 		btnMore2 = new JButton(plus);
 		btnMore3 = new JButton(plus);
@@ -200,9 +213,17 @@ public class ShowListPanel extends AbstractJPanel {
 	}
 
 	public void nextPage() {
-		if (page * 8 < Almacen.shows.size()) {
+		if (page * 8 < size) {
 			page++;
 			updateContents();
+		} else {
+			int oldSize = size;
+			sDao.fillShows(filter, textFilter, size);
+			if (oldSize != Almacen.shows.size()) {
+				page++;
+				totalPages = size / 8 + 1;
+				updateContents();
+			}
 		}
 	}
 
@@ -211,6 +232,14 @@ public class ShowListPanel extends AbstractJPanel {
 			page--;
 			updateContents();
 		}
+	}
+
+	public JComboBox<ShowFilter> getJcbFilter() {
+		return jcbFilter;
+	}
+
+	public JTextField getTxtFilter() {
+		return txtFilter;
 	}
 
 	public JButton getBtnFilter() {
@@ -225,6 +254,15 @@ public class ShowListPanel extends AbstractJPanel {
 	public JCheckBox[] getChksFav() {
 		JCheckBox[] chks = { chkFav1, chkFav2, chkFav3, chkFav4, chkFav5 };
 		return chks;
+	}
+
+	public void setFilter(ShowFilter filter, String what) {
+		this.filter = filter;
+		this.textFilter = what;
+		Almacen.clearShows();
+		sDao.fillShows(filter, what, 0);
+		page = 0;
+		updateContents();
 	}
 
 	public int getM1pos() {
@@ -248,11 +286,7 @@ public class ShowListPanel extends AbstractJPanel {
 	}
 
 	public void updateContents() {
-		pos1 = 0 + (page * 5);
-		pos2 = 1 + (page * 5);
-		pos3 = 2 + (page * 5);
-		pos4 = 3 + (page * 5);
-		pos5 = 4 + (page * 5);
+		calcPosition();
 
 		lblTitle.setText("Pagina " + (page + 1) + " de " + totalPages);
 		hbS1T.removeAll();
@@ -266,34 +300,119 @@ public class ShowListPanel extends AbstractJPanel {
 		hbS5T.removeAll();
 		hbS5D.removeAll();
 
-		addToBox(hbS1T, new JLabel(getShow(pos1).getTitle()));
-		addToBox(hbS2T, new JLabel(getShow(pos2).getTitle()));
-		addToBox(hbS3T, new JLabel(getShow(pos3).getTitle()));
-		addToBox(hbS4T, new JLabel(getShow(pos4).getTitle()));
-		addToBox(hbS5T, new JLabel(getShow(pos5).getTitle()));
-
-		addToBox(hbS1D, new JLabel("Pais: " + getShow(pos1).getCountry()));
-		addToBox(hbS2D, new JLabel("Pais: " + getShow(pos2).getCountry()));
-		addToBox(hbS3D, new JLabel("Pais: " + getShow(pos3).getCountry()));
-		addToBox(hbS4D, new JLabel("Pais: " + getShow(pos4).getCountry()));
-		addToBox(hbS5D, new JLabel("Pais: " + getShow(pos5).getCountry()));
-
-		addToBox(hbS1D, new JLabel("Director: " + getShow(pos1).getDirector()));
-		addToBox(hbS2D, new JLabel("Director: " + getShow(pos2).getDirector()));
-		addToBox(hbS3D, new JLabel("Director: " + getShow(pos3).getDirector()));
-		addToBox(hbS4D, new JLabel("Director: " + getShow(pos4).getDirector()));
-		addToBox(hbS5D, new JLabel("Director: " + getShow(pos5).getDirector()));
-
-		addToBox(hbS1D, new JLabel("Salida: " + getShow(pos1).getRelease_year()));
-		addToBox(hbS2D, new JLabel("Salida: " + getShow(pos2).getRelease_year()));
-		addToBox(hbS3D, new JLabel("Salida: " + getShow(pos3).getRelease_year()));
-		addToBox(hbS4D, new JLabel("Salida: " + getShow(pos4).getRelease_year()));
-		addToBox(hbS5D, new JLabel("Salida: " + getShow(pos5).getRelease_year()));
+		if (size == 0) {
+			addToBox(hbS1T, new JLabel("No hay coincidencias"));
+			hbS1M.setVisible(false);
+			hbS2M.setVisible(false);
+			hbS3M.setVisible(false);
+			hbS4M.setVisible(false);
+			hbS5M.setVisible(false);
+		} else if (pos5 < size) {
+			addToBox(hbS5T, new JLabel(getShow(pos5).getTitle()));
+			addToBox(hbS5D, new JLabel("Pais: " + getShow(pos5).getCountry()));
+			addToBox(hbS5D, new JLabel("Director: " + getShow(pos5).getDirector()));
+			addToBox(hbS5D, new JLabel("Salida: " + getShow(pos5).getRelease_year()));
+			addToBox(hbS4T, new JLabel(getShow(pos4).getTitle()));
+			addToBox(hbS4D, new JLabel("Pais: " + getShow(pos4).getCountry()));
+			addToBox(hbS4D, new JLabel("Director: " + getShow(pos4).getDirector()));
+			addToBox(hbS4D, new JLabel("Salida: " + getShow(pos4).getRelease_year()));
+			addToBox(hbS3T, new JLabel(getShow(pos3).getTitle()));
+			addToBox(hbS3D, new JLabel("Pais: " + getShow(pos3).getCountry()));
+			addToBox(hbS3D, new JLabel("Director: " + getShow(pos3).getDirector()));
+			addToBox(hbS3D, new JLabel("Salida: " + getShow(pos3).getRelease_year()));
+			addToBox(hbS2T, new JLabel(getShow(pos2).getTitle()));
+			addToBox(hbS2D, new JLabel("Pais: " + getShow(pos2).getCountry()));
+			addToBox(hbS2D, new JLabel("Director: " + getShow(pos2).getDirector()));
+			addToBox(hbS2D, new JLabel("Salida: " + getShow(pos2).getRelease_year()));
+			addToBox(hbS1T, new JLabel(getShow(pos1).getTitle()));
+			addToBox(hbS1D, new JLabel("Pais: " + getShow(pos1).getCountry()));
+			addToBox(hbS1D, new JLabel("Director: " + getShow(pos1).getDirector()));
+			addToBox(hbS1D, new JLabel("Salida: " + getShow(pos1).getRelease_year()));
+			hbS1M.setVisible(true);
+			hbS2M.setVisible(true);
+			hbS3M.setVisible(true);
+			hbS4M.setVisible(true);
+			hbS5M.setVisible(true);
+		} else if (pos4 < size) {
+			addToBox(hbS4T, new JLabel(getShow(pos4).getTitle()));
+			addToBox(hbS4D, new JLabel("Pais: " + getShow(pos4).getCountry()));
+			addToBox(hbS4D, new JLabel("Director: " + getShow(pos4).getDirector()));
+			addToBox(hbS4D, new JLabel("Salida: " + getShow(pos4).getRelease_year()));
+			addToBox(hbS3T, new JLabel(getShow(pos3).getTitle()));
+			addToBox(hbS3D, new JLabel("Pais: " + getShow(pos3).getCountry()));
+			addToBox(hbS3D, new JLabel("Director: " + getShow(pos3).getDirector()));
+			addToBox(hbS3D, new JLabel("Salida: " + getShow(pos3).getRelease_year()));
+			addToBox(hbS2T, new JLabel(getShow(pos2).getTitle()));
+			addToBox(hbS2D, new JLabel("Pais: " + getShow(pos2).getCountry()));
+			addToBox(hbS2D, new JLabel("Director: " + getShow(pos2).getDirector()));
+			addToBox(hbS2D, new JLabel("Salida: " + getShow(pos2).getRelease_year()));
+			addToBox(hbS1T, new JLabel(getShow(pos1).getTitle()));
+			addToBox(hbS1D, new JLabel("Pais: " + getShow(pos1).getCountry()));
+			addToBox(hbS1D, new JLabel("Director: " + getShow(pos1).getDirector()));
+			addToBox(hbS1D, new JLabel("Salida: " + getShow(pos1).getRelease_year()));
+			hbS1M.setVisible(true);
+			hbS2M.setVisible(true);
+			hbS3M.setVisible(true);
+			hbS4M.setVisible(true);
+			hbS5M.setVisible(false);
+		} else if (pos3 < size) {
+			addToBox(hbS3T, new JLabel(getShow(pos3).getTitle()));
+			addToBox(hbS3D, new JLabel("Pais: " + getShow(pos3).getCountry()));
+			addToBox(hbS3D, new JLabel("Director: " + getShow(pos3).getDirector()));
+			addToBox(hbS3D, new JLabel("Salida: " + getShow(pos3).getRelease_year()));
+			addToBox(hbS2T, new JLabel(getShow(pos2).getTitle()));
+			addToBox(hbS2D, new JLabel("Pais: " + getShow(pos2).getCountry()));
+			addToBox(hbS2D, new JLabel("Director: " + getShow(pos2).getDirector()));
+			addToBox(hbS2D, new JLabel("Salida: " + getShow(pos2).getRelease_year()));
+			addToBox(hbS1T, new JLabel(getShow(pos1).getTitle()));
+			addToBox(hbS1D, new JLabel("Pais: " + getShow(pos1).getCountry()));
+			addToBox(hbS1D, new JLabel("Director: " + getShow(pos1).getDirector()));
+			addToBox(hbS1D, new JLabel("Salida: " + getShow(pos1).getRelease_year()));
+			hbS1M.setVisible(true);
+			hbS2M.setVisible(true);
+			hbS3M.setVisible(true);
+			hbS4M.setVisible(false);
+			hbS5M.setVisible(false);
+		} else if (pos2 < size) {
+			addToBox(hbS2T, new JLabel(getShow(pos2).getTitle()));
+			addToBox(hbS2D, new JLabel("Pais: " + getShow(pos2).getCountry()));
+			addToBox(hbS2D, new JLabel("Director: " + getShow(pos2).getDirector()));
+			addToBox(hbS2D, new JLabel("Salida: " + getShow(pos2).getRelease_year()));
+			addToBox(hbS1T, new JLabel(getShow(pos1).getTitle()));
+			addToBox(hbS1D, new JLabel("Pais: " + getShow(pos1).getCountry()));
+			addToBox(hbS1D, new JLabel("Director: " + getShow(pos1).getDirector()));
+			addToBox(hbS1D, new JLabel("Salida: " + getShow(pos1).getRelease_year()));
+			hbS1M.setVisible(true);
+			hbS2M.setVisible(true);
+			hbS3M.setVisible(false);
+			hbS4M.setVisible(false);
+			hbS5M.setVisible(false);
+		} else if (pos1 < size) {
+			addToBox(hbS1T, new JLabel(getShow(pos1).getTitle()));
+			addToBox(hbS1D, new JLabel("Pais: " + getShow(pos1).getCountry()));
+			addToBox(hbS1D, new JLabel("Director: " + getShow(pos1).getDirector()));
+			addToBox(hbS1D, new JLabel("Salida: " + getShow(pos1).getRelease_year()));
+			hbS1M.setVisible(true);
+			hbS2M.setVisible(false);
+			hbS3M.setVisible(false);
+			hbS4M.setVisible(false);
+			hbS5M.setVisible(false);
+		}
 
 		repaint();
 	}
 
 	private Show getShow(int i) {
 		return Almacen.shows.get(i);
+	}
+
+	private void calcPosition() {
+		pos1 = 0 + (page * 5);
+		pos2 = 1 + (page * 5);
+		pos3 = 2 + (page * 5);
+		pos4 = 3 + (page * 5);
+		pos5 = 4 + (page * 5);
+		size = Almacen.shows.size();
+		totalPages = size / 8 + 1;
 	}
 }
