@@ -122,11 +122,6 @@ public class Show implements Comparable<Show> {
 		return listed_in;
 	}
 
-
-	public String getReleaseYear() {
-		return release_year;
-	}
-
 	public String getDescription() {
 		return description;
 	}

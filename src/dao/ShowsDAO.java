@@ -29,8 +29,8 @@ public class ShowsDAO extends AbstractDAO {
 		}
 	}
 
-	public void fillShows(int startPoint) {
-		try (ResultSet shows = statement.executeQuery("select * from shows limit " + startPoint + ",40;")) {
+	public void fillShows(int start) {
+		try (ResultSet shows = statement.executeQuery("select * from shows limit " + start + ",40;")) {
 			while (shows.next()) {
 				Almacen.shows
 						.add(new Show(shows.getString(1), shows.getString(2), shows.getString(3), shows.getString(4),
