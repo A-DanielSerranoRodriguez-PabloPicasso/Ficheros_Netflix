@@ -1,6 +1,7 @@
 package ui.models;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -27,6 +28,18 @@ public abstract class AbstractJPanel extends JPanel {
 		return vb;
 	}
 
+	protected Component defaultHS(int i) {
+		Component hs = Box.createHorizontalStrut(i);
+		hs.setMaximumSize(new Dimension(i, 0));
+		return hs;
+	}
+
+	protected Component defaultVS(int i) {
+		Component vs = Box.createVerticalStrut(i);
+		vs.setMaximumSize(new Dimension(i, 0));
+		return vs;
+	}
+
 	protected void addToBox(Box box, Component toAdd) {
 		box.add(toAdd, box.getComponentCount() - 1);
 	}
@@ -34,4 +47,9 @@ public abstract class AbstractJPanel extends JPanel {
 	protected void addVG() {
 		add(Box.createVerticalGlue());
 	}
+
+	protected void addVS(int i) {
+		add(defaultVS(i));
+	}
+
 }

@@ -1,12 +1,20 @@
 package models;
 
+import java.util.ArrayList;
+
 public class User {
 	private String name, passwd, email;
+	private ArrayList<Show> favorites;
 
 	public User(String name, String email, String passwd) {
 		this.name = name;
 		this.email = email;
 		this.passwd = passwd;
+		this.favorites = new ArrayList<Show>();
+	}
+	
+	public void populateShows() {
+		
 	}
 
 	public String getName() {
@@ -25,5 +33,9 @@ public class User {
 
 	public String getEmail() {
 		return email;
+	}
+	
+	public ArrayList<Show> getFavorites(){
+		return favorites;
 	}
 }

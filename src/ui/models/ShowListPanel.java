@@ -44,7 +44,7 @@ public class ShowListPanel extends AbstractJPanel {
 		this.user = user;
 		this.page = 0;
 		this.size = Almacen.shows.size();
-		this.totalPages = size / 8 + 1;
+		this.totalPages = (int) (Math.ceil((double) size / (double) (8))) + 1;
 
 		ImageIcon plus = new ImageIcon("resources/img/plus.png");
 		hbUpper = defaultHB();
@@ -108,12 +108,6 @@ public class ShowListPanel extends AbstractJPanel {
 		hbS3M = defaultHB();
 		hbS4M = defaultHB();
 		hbS5M = defaultHB();
-
-//		btnMore1 = new JButton("uno");
-//		btnMore2 = new JButton("dos");
-//		btnMore3 = new JButton("tres");
-//		btnMore4 = new JButton("Cuat");
-//		btnMore5 = new JButton("cinc");
 
 		btnMore1 = new JButton(plus);
 		btnMore2 = new JButton(plus);
@@ -221,7 +215,6 @@ public class ShowListPanel extends AbstractJPanel {
 			sDao.fillShows(filter, textFilter, size);
 			if (oldSize != Almacen.shows.size()) {
 				page++;
-				totalPages = size / 8 + 1;
 				updateContents();
 			}
 		}
@@ -413,6 +406,45 @@ public class ShowListPanel extends AbstractJPanel {
 		pos4 = 3 + (page * 5);
 		pos5 = 4 + (page * 5);
 		size = Almacen.shows.size();
-		totalPages = size / 8 + 1;
+		totalPages = (int) (Math.ceil((double) size / (double) (8))) + 1;
+
+		chkFav1.setSelected(false);
+		chkFav2.setSelected(false);
+		chkFav3.setSelected(false);
+		chkFav4.setSelected(false);
+		chkFav5.setSelected(false);
+
+		for (Show userShow : user.getFavorites()) {
+			for (int i = page * 5; i < (page * 5 + 5); i++) {
+				if (Almacen.shows.get(i).getShow_id().equals(userShow.getShow_id())) {
+					switch (i % 5) {
+					case 0:
+						chkFav1.setSelected(true);
+						break;
+
+					case 1:
+						chkFav2.setSelected(true);
+						break;
+
+					case 2:
+						chkFav3.setSelected(true);
+						break;
+
+					case 3:
+						chkFav4.setSelected(true);
+						break;
+
+					case 4:
+						chkFav5.setSelected(true);
+						break;
+					}
+				}
+			}
+			for (Show setShow : Almacen.nextSet) {
+				if (userShow.getShow_id().equals(setShow.getShow_id())) {
+
+				}
+			}
+		}
 	}
 }

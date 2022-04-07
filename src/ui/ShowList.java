@@ -10,12 +10,13 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
+import models.Show;
 import models.User;
 import ui.models.ShowInfoPanel;
 import ui.models.ShowListPanel;
+import utils.Almacen;
 import utils.ShowFilter;
 
 public class ShowList {
@@ -24,7 +25,7 @@ public class ShowList {
 	private JFrame frame;
 	private ShowListPanel showPanel;
 	private ShowInfoPanel showInfo;
-	private JComboBox comboBox;
+	private JCheckBox chckbxNewCheckBox;
 
 	/**
 	 * Launch the application.
@@ -46,6 +47,7 @@ public class ShowList {
 	 * Create the application.
 	 */
 	public ShowList() {
+		usuario = new User("dani", "dani", "dani");
 		initialize();
 	}
 
@@ -69,13 +71,6 @@ public class ShowList {
 		frame.getContentPane().add(showPanel, "name_14215655555075");
 		this.showInfo = new ShowInfoPanel();
 		frame.getContentPane().add(showInfo);
-
-		comboBox = new JComboBox();
-		comboBox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-			}
-		});
-		frame.getContentPane().add(comboBox, "name_5554178004500");
 	}
 
 	private void setUIbehaviour() {
@@ -131,6 +126,101 @@ public class ShowList {
 				showPanel.setVisible(false);
 				showInfo.setVisible(true);
 				showInfo.updateInfo(showPanel.getM1pos());
+			}
+		});
+
+		btnsMore[1].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				showPanel.setVisible(false);
+				showInfo.setVisible(true);
+				showInfo.updateInfo(showPanel.getM2pos());
+			}
+		});
+
+		btnsMore[2].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				showPanel.setVisible(false);
+				showInfo.setVisible(true);
+				showInfo.updateInfo(showPanel.getM3pos());
+			}
+		});
+
+		btnsMore[3].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				showPanel.setVisible(false);
+				showInfo.setVisible(true);
+				showInfo.updateInfo(showPanel.getM4pos());
+			}
+		});
+
+		btnsMore[4].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				showPanel.setVisible(false);
+				showInfo.setVisible(true);
+				showInfo.updateInfo(showPanel.getM5pos());
+			}
+		});
+
+		chksFav[0].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (chksFav[0].isSelected())
+					usuario.getFavorites().add(Almacen.shows.get(showPanel.getM1pos()));
+
+				for (Show s : usuario.getFavorites())
+					System.out.println(s.getTitle());
+			}
+		});
+
+		chksFav[1].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (chksFav[1].isSelected())
+					usuario.getFavorites().add(Almacen.shows.get(showPanel.getM2pos()));
+
+				for (Show s : usuario.getFavorites())
+					System.out.println(s.getTitle());
+			}
+		});
+
+		chksFav[2].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (chksFav[2].isSelected())
+					usuario.getFavorites().add(Almacen.shows.get(showPanel.getM3pos()));
+
+				for (Show s : usuario.getFavorites())
+					System.out.println(s.getTitle());
+			}
+		});
+
+		chksFav[3].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (chksFav[3].isSelected())
+					usuario.getFavorites().add(Almacen.shows.get(showPanel.getM4pos()));
+
+				for (Show s : usuario.getFavorites())
+					System.out.println(s.getTitle());
+			}
+		});
+
+		chksFav[4].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (chksFav[4].isSelected())
+					usuario.getFavorites().add(Almacen.shows.get(showPanel.getM5pos()));
+
+				for (Show s : usuario.getFavorites())
+					System.out.println(s.getTitle());
 			}
 		});
 

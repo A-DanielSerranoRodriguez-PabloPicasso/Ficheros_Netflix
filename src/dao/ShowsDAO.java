@@ -3,6 +3,7 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import models.Show;
 import utils.Almacen;
@@ -29,16 +30,14 @@ public class ShowsDAO extends AbstractDAO {
 			return false;
 		}
 	}
-	
+
 	public void fillShows(ShowFilter where, String what, int start) {
+		Almacen.nextSet.clear();
 		switch (where) {
 		case Nada:
 			try (ResultSet shows = statement.executeQuery("select * from shows limit " + start + ",40;")) {
 				while (shows.next()) {
-					Almacen.shows.add(
-							new Show(shows.getString(1), shows.getString(2), shows.getString(3), shows.getString(4),
-									shows.getString(5), shows.getString(6), shows.getString(7), shows.getString(8),
-									shows.getString(9), shows.getString(10), shows.getString(11), shows.getString(12)));
+					addShow(shows);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -49,10 +48,7 @@ public class ShowsDAO extends AbstractDAO {
 			try (ResultSet shows = statement
 					.executeQuery("select * from shows where director like '%" + what + "%' limit " + start + ",40;")) {
 				while (shows.next()) {
-					Almacen.shows.add(
-							new Show(shows.getString(1), shows.getString(2), shows.getString(3), shows.getString(4),
-									shows.getString(5), shows.getString(6), shows.getString(7), shows.getString(8),
-									shows.getString(9), shows.getString(10), shows.getString(11), shows.getString(12)));
+					addShow(shows);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -63,10 +59,7 @@ public class ShowsDAO extends AbstractDAO {
 			try (ResultSet shows = statement
 					.executeQuery("select * from shows where country like '%" + what + "%' limit " + start + ",40;")) {
 				while (shows.next()) {
-					Almacen.shows.add(
-							new Show(shows.getString(1), shows.getString(2), shows.getString(3), shows.getString(4),
-									shows.getString(5), shows.getString(6), shows.getString(7), shows.getString(8),
-									shows.getString(9), shows.getString(10), shows.getString(11), shows.getString(12)));
+					addShow(shows);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -77,10 +70,7 @@ public class ShowsDAO extends AbstractDAO {
 			try (ResultSet shows = statement.executeQuery(
 					"select * from shows where date_release like '%" + what + "%' limit " + start + ",40;")) {
 				while (shows.next()) {
-					Almacen.shows.add(
-							new Show(shows.getString(1), shows.getString(2), shows.getString(3), shows.getString(4),
-									shows.getString(5), shows.getString(6), shows.getString(7), shows.getString(8),
-									shows.getString(9), shows.getString(10), shows.getString(11), shows.getString(12)));
+					addShow(shows);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -91,15 +81,21 @@ public class ShowsDAO extends AbstractDAO {
 			try (ResultSet shows = statement
 					.executeQuery("select * from shows where title like '%" + what + "%' limit " + start + ",40;")) {
 				while (shows.next()) {
-					Almacen.shows.add(
-							new Show(shows.getString(1), shows.getString(2), shows.getString(3), shows.getString(4),
-									shows.getString(5), shows.getString(6), shows.getString(7), shows.getString(8),
-									shows.getString(9), shows.getString(10), shows.getString(11), shows.getString(12)));
+					addShow(shows);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			break;
 		}
+	}
+
+	private void addShow(ResultSet s) throws SQLException {
+		Almacen.shows.add(new Show(s.getString(1), s.getString(2), s.getString(3), s.getString(4), s.getString(5),
+				s.getString(6), s.getString(7), s.getString(8), s.getString(9), s.getString(10), s.getString(11),
+				s.getString(12)));
+		Almacen.nextSet.add(new Show(s.getString(1), s.getString(2), s.getString(3), s.getString(4), s.getString(5),
+				s.getString(6), s.getString(7), s.getString(8), s.getString(9), s.getString(10), s.getString(11),
+				s.getString(12)));
 	}
 }
