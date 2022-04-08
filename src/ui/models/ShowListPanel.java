@@ -26,7 +26,7 @@ public class ShowListPanel extends AbstractJPanel {
 	private int page, totalPages, size, pos1, pos2, pos3, pos4, pos5;
 	private ShowFilter filter = ShowFilter.Nada;
 
-	private Box hbUpper, hbNav, hbOpt, hbMid, hbBottom;
+	private Box hbUpper, hbNav, hbOpt, hbFavs, hbMid, hbBottom;
 	private Box vbUpper, vbMid;
 	private Box hbShow1, hbShow2, hbShow3, hbShow4, hbShow5;
 	private Box vbShow1, vbShow2, vbShow3, vbShow4, vbShow5;
@@ -34,7 +34,7 @@ public class ShowListPanel extends AbstractJPanel {
 	private JLabel lblTitle, lblShows, lblFilter;
 	private JComboBox<ShowFilter> jcbFilter;
 	private JTextField txtFilter;
-	private JButton btnFilter, btnNextP, btnPreviousP;
+	private JButton btnFilter, btnNextP, btnPreviousP, btnExportFavs, btnImportFavs;
 	private JButton btnMore1, btnMore2, btnMore3, btnMore4, btnMore5;
 	private JCheckBox chkFav1, chkFav2, chkFav3, chkFav4, chkFav5;
 
@@ -45,6 +45,13 @@ public class ShowListPanel extends AbstractJPanel {
 		this.page = 0;
 		this.size = Almacen.shows.size();
 		this.totalPages = (int) (Math.ceil((double) size / (double) (8))) + 1;
+
+		hbFavs = defaultHB();
+		btnExportFavs = new JButton("Exportar favoritos");
+		btnImportFavs = new JButton("Importar favoritos");
+
+		addToBox(hbFavs, btnExportFavs);
+		addToBox(hbFavs, btnImportFavs);
 
 		ImageIcon plus = new ImageIcon("resources/img/plus.png");
 		hbUpper = defaultHB();
@@ -74,6 +81,7 @@ public class ShowListPanel extends AbstractJPanel {
 		addToBox(hbOpt, txtFilter);
 		addToBox(hbOpt, btnFilter);
 		addToBox(vbUpper, hbOpt);
+		addToBox(vbUpper, hbFavs);
 
 		addToBox(hbUpper, vbUpper);
 

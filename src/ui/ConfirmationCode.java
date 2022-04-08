@@ -4,6 +4,8 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -86,6 +88,9 @@ public class ConfirmationCode {
 				UserDAO uDao = new UserDAO();
 				if (uDao.registerCheck(name, Integer.parseInt(panel2.getInput().getText()))) {
 					uDao.updateActiveStatus(name);
+					if (!hasFile(name)) {
+						createFile(name);
+					}
 					panel2.getErrors().setVisible(false);
 					frame.dispose();
 				} else {
@@ -93,6 +98,18 @@ public class ConfirmationCode {
 				}
 			}
 		});
+	}
 
+	private boolean hasFile(String username) {
+		File file = new File("favorites/" + username + ".csv");
+		return file.exists();
+	}
+
+	private void createFile(String username) {
+		try {
+			new File("favorites/" + username + ".csv").createNewFile();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

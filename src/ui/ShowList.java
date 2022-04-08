@@ -2,15 +2,20 @@ package ui;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+
+import com.opencsv.CSVWriter;
 
 import models.Show;
 import models.User;
@@ -21,33 +26,29 @@ import utils.ShowFilter;
 
 public class ShowList {
 	private User usuario;
+	private File favs, favsAux;
+	private CSVWriter favsWriter, favsAuxWriter;
+	private Scanner scWriter, scAux;
 
 	private JFrame frame;
 	private ShowListPanel showPanel;
 	private ShowInfoPanel showInfo;
-	private JCheckBox chckbxNewCheckBox;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ShowList window = new ShowList();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
-	public ShowList() {
-		usuario = new User("dani", "dani", "dani");
+	public ShowList(User usuario) {
+		this.usuario = usuario;
+		favs = new File("favorites/" + this.usuario.getName() + ".csv");
+		favsAux = new File("favorites/" + this.usuario.getName() + "-aux.csv");
+		try {
+			favsWriter = new CSVWriter(new FileWriter(favs));
+			favsAuxWriter = new CSVWriter(new FileWriter(favsAux));
+			scWriter = new Scanner(favs);
+			scAux = new Scanner(favsAux);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		initialize();
 	}
 
@@ -122,7 +123,6 @@ public class ShowList {
 		btnsMore[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				showPanel.setVisible(false);
 				showInfo.setVisible(true);
 				showInfo.updateInfo(showPanel.getM1pos());
@@ -132,7 +132,6 @@ public class ShowList {
 		btnsMore[1].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				showPanel.setVisible(false);
 				showInfo.setVisible(true);
 				showInfo.updateInfo(showPanel.getM2pos());
@@ -142,7 +141,6 @@ public class ShowList {
 		btnsMore[2].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				showPanel.setVisible(false);
 				showInfo.setVisible(true);
 				showInfo.updateInfo(showPanel.getM3pos());
@@ -152,7 +150,6 @@ public class ShowList {
 		btnsMore[3].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				showPanel.setVisible(false);
 				showInfo.setVisible(true);
 				showInfo.updateInfo(showPanel.getM4pos());
@@ -162,7 +159,6 @@ public class ShowList {
 		btnsMore[4].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				showPanel.setVisible(false);
 				showInfo.setVisible(true);
 				showInfo.updateInfo(showPanel.getM5pos());
@@ -173,7 +169,9 @@ public class ShowList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (chksFav[0].isSelected())
-					usuario.getFavorites().add(Almacen.shows.get(showPanel.getM1pos()));
+					saveFav(showPanel.getM1pos());
+				else
+					removeFav(showPanel.getM1pos());
 
 				for (Show s : usuario.getFavorites())
 					System.out.println(s.getTitle());
@@ -184,7 +182,9 @@ public class ShowList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (chksFav[1].isSelected())
-					usuario.getFavorites().add(Almacen.shows.get(showPanel.getM2pos()));
+					saveFav(showPanel.getM2pos());
+				else
+					removeFav(showPanel.getM2pos());
 
 				for (Show s : usuario.getFavorites())
 					System.out.println(s.getTitle());
@@ -195,7 +195,9 @@ public class ShowList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (chksFav[2].isSelected())
-					usuario.getFavorites().add(Almacen.shows.get(showPanel.getM3pos()));
+					saveFav(showPanel.getM3pos());
+				else
+					removeFav(showPanel.getM3pos());
 
 				for (Show s : usuario.getFavorites())
 					System.out.println(s.getTitle());
@@ -206,7 +208,9 @@ public class ShowList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (chksFav[3].isSelected())
-					usuario.getFavorites().add(Almacen.shows.get(showPanel.getM4pos()));
+					saveFav(showPanel.getM4pos());
+				else
+					removeFav(showPanel.getM4pos());
 
 				for (Show s : usuario.getFavorites())
 					System.out.println(s.getTitle());
@@ -217,12 +221,63 @@ public class ShowList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (chksFav[4].isSelected())
-					usuario.getFavorites().add(Almacen.shows.get(showPanel.getM5pos()));
+					saveFav(showPanel.getM5pos());
+				else
+					removeFav(showPanel.getM5pos());
 
 				for (Show s : usuario.getFavorites())
 					System.out.println(s.getTitle());
 			}
 		});
+	}
 
+	private void saveFav(int position) {
+		Show s = Almacen.shows.get(position);
+		String[] line = { s.getShow_id(), s.getTitle() };
+		favsWriter.writeNext(line);
+		try {
+			favsWriter.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void removeFav(int position) {
+		Show s = Almacen.shows.get(position);
+
+		favsAux.delete();
+		try {
+			favsAux.createNewFile();
+			favsAuxWriter = new CSVWriter(new FileWriter(favsAux));
+			scAux = new Scanner(favsAux);
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
+
+		while (scWriter.hasNextLine()) {
+			String[] line = scWriter.nextLine().replace("\"", "").split(",");
+			if (!s.getShow_id().equals(line[0])) {
+				favsAuxWriter.writeNext(line);
+			}
+			try {
+				favsAuxWriter.flush();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+
+			}
+		}
+		favs.delete();
+		try {
+			favs.createNewFile();
+			favsWriter = new CSVWriter(new FileWriter(favs));
+			scWriter = new Scanner(favs);
+			while (scAux.hasNextLine()) {
+				String[] line = scAux.nextLine().replace("\"", "").split(",");
+				favsWriter.writeNext(line);
+				favsWriter.flush();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

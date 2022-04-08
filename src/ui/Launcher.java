@@ -4,6 +4,8 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -69,7 +71,11 @@ public class Launcher {
 							if (user != null) {
 								errs[0].setVisible(false);
 								errs[1].setVisible(false);
-								System.exit(0);
+								if (!hasFile(username)) {
+									createFile(username);
+								}
+								frame.dispose();
+								new ShowList(new User(username, uDao.getMail(username), passwd));
 							} else {
 								errs[0].setVisible(false);
 								errs[1].setVisible(true);
@@ -178,5 +184,18 @@ public class Launcher {
 				}
 			}
 		});
+	}
+
+	private boolean hasFile(String username) {
+		File file = new File("favorites/" + username + ".csv");
+		return file.exists();
+	}
+
+	private void createFile(String username) {
+		try {
+			new File("favorites/" + username + ".csv").createNewFile();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 }
