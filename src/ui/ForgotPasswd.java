@@ -18,7 +18,7 @@ public class ForgotPasswd {
 	private JFrame frame;
 	private FpUserPanel panel1;
 	private FpPasswdPanel panel2;
-	private String user;
+	private String name, mail;
 
 	/**
 	 * Create the application.
@@ -63,10 +63,12 @@ public class ForgotPasswd {
 		p1btns[1].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				user = panel1.getText().getText();
-				if (uDao.userExists(user)) {
+				name = panel1.getText().getText();
+				if (uDao.userExists(name)) {
 					panel1.setVisible(false);
 					panel2.setVisible(true);
+					mail = uDao.getUserInfo(name)[1];
+					name = uDao.getUserInfo(name)[0];
 				} else {
 					JOptionPane.showMessageDialog(frame, "El usuario o correo no existe");
 				}
@@ -87,12 +89,8 @@ public class ForgotPasswd {
 				if (panel2.passwdMatch()) {
 					EmailHelper emailHelper = new EmailHelper();
 					int rndm = (int) ((Math.random() * 100000) + 1);
-					uDao.updatePasswd(user, new String(panel2.getPasswd()));
-					if (UserDAO.usernameExists(user)) {
-						emailHelper.sendDefaultMessage(uDao.getMail(user), rndm);
-					} else {
-						emailHelper.sendDefaultMessage(user, rndm);
-					}
+					uDao.updatePasswd(name, new String(panel2.getPasswd()));
+					emailHelper.sendDefaultMessage(mail, rndm);
 
 					frame.dispose();
 				} else
@@ -106,14 +104,9 @@ public class ForgotPasswd {
 				if (panel2.passwdMatch()) {
 					EmailHelper emailHelper = new EmailHelper();
 					int rndm = (int) ((Math.random() * 100000) + 1);
-					uDao.updatePasswd(user, new String(panel2.getPasswd()));
-					if (UserDAO.usernameExists(user)) {
-						emailHelper.sendDefaultMessage(uDao.getMail(user), rndm);
-						new ConfirmationCode(user, uDao.getMail(user), rndm);
-					} else {
-						emailHelper.sendDefaultMessage(user, rndm);
-						new ConfirmationCode(uDao.getUsername(user), user, rndm);
-					}
+					uDao.updatePasswd(name, new String(panel2.getPasswd()));
+					emailHelper.sendDefaultMessage(mail, rndm);
+					new ConfirmationCode(name, mail, rndm);
 					frame.dispose();
 
 				} else

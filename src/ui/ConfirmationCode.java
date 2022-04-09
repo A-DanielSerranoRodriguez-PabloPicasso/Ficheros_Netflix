@@ -86,8 +86,7 @@ public class ConfirmationCode {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				UserDAO uDao = new UserDAO();
-				if (uDao.registerCheck(name, Integer.parseInt(panel2.getInput().getText()))) {
-					uDao.updateActiveStatus(name);
+				if (uDao.activate(name, Integer.parseInt(panel2.getInput().getText()))) {
 					if (!hasFile(name)) {
 						createFile(name);
 					}

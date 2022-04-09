@@ -17,7 +17,7 @@ import dao.UserDAO;
 
 public class EmailHelper {
 	public Session ses;
-	public static String mail;
+	public String mail;
 
 	public EmailHelper() {
 		super();
@@ -31,7 +31,7 @@ public class EmailHelper {
 			// Here would be *mail* if this were to be implemented in a real environment,
 			// in *setREcipients(to, _mail_)*
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("dani.serrano00@gmail.com"));
-			message.setSubject("Mail Subject");
+			message.setSubject("Codgo de verificiacion");
 			String msg = "Tu codigo de confirmacion es:\n\n" + rndm + "\n\n";
 
 			MimeBodyPart mimeBodyPart = new MimeBodyPart();
@@ -43,7 +43,7 @@ public class EmailHelper {
 			message.setContent(multipart);
 
 			Transport.send(message);
-			UserDAO.updateCC(mail, rndm);
+			UserDAO.updateActivCode(mail, rndm);
 
 		} catch (Exception e) {
 			e.printStackTrace();

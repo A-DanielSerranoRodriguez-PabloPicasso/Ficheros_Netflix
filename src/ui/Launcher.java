@@ -65,9 +65,9 @@ public class Launcher {
 					errs[0].setVisible(true);
 					errs[1].setVisible(false);
 				} else {
+					User user = uDao.login(username, passwd);
 					if (uDao.userExists(username)) {
 						if (uDao.isActive(username)) {
-							User user = uDao.login(username, passwd);
 							if (user != null) {
 								errs[0].setVisible(false);
 								errs[1].setVisible(false);
@@ -75,7 +75,7 @@ public class Launcher {
 									createFile(username);
 								}
 								frame.dispose();
-								new ShowList(new User(username, uDao.getMail(username), passwd));
+								new ShowList(user);
 							} else {
 								errs[0].setVisible(false);
 								errs[1].setVisible(true);
@@ -100,13 +100,14 @@ public class Launcher {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				UserDAO uDao = new UserDAO();
-				String text = loginPanel.getUsername().getText();
+				String text = loginPanel.getUsername().getText(),
+						passwd = new String(loginPanel.getPasswd().getPassword());
+				User user = uDao.login(text, passwd);
 
-				if (UserDAO.usernameExists(text)) {
-					new ConfirmationCode(text, uDao.getMail(text), uDao.getCC(text));
-				} else if (UserDAO.mailExists(text)) {
-					new ConfirmationCode(uDao.getUsername(text), text, uDao.getCC(text));
+				if (user != null) {
+					new ConfirmationCode(user.getName(), user.getEmail(), uDao.getAC("username", user.getName()));
 				}
+
 				loginPanel.getVerifyBtn().setVisible(false);
 				loginPanel.getLoginBtn().setVisible(true);
 			}
@@ -149,7 +150,7 @@ public class Launcher {
 					errs[2].setVisible(false);
 				} else {
 					UserDAO uDao = new UserDAO();
-					if (!UserDAO.usernameExists(userData[0]) && !UserDAO.mailExists(userData[1])) {
+					if (!uDao.userExists(userData[0]) && !uDao.userExists(userData[1])) {
 						if (userData[2].equals(userData[3])) {
 							int rndm = (int) ((Math.random() * 100000) + 1);
 
