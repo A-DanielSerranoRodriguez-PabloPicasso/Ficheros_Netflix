@@ -3,7 +3,9 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import models.Show;
 import models.User;
 
 public class UserDAO extends AbstractDAO {
@@ -185,6 +187,21 @@ public class UserDAO extends AbstractDAO {
 			try {
 				statement.execute("UPDATE users SET passwd = '" + passwd + "', active = 0 WHERE mail = '"
 						+ identification + "';");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void populateUserFavs(User user, ArrayList<Integer> ids) {
+		for (Integer id : ids) {
+			try (ResultSet show = statement.executeQuery("SELECT * FROM shows WHERE id=" + id + ";")) {
+				while (show.next()) {
+					user.getFavorites()
+							.add(new Show(show.getString(1), show.getString(2), show.getString(3), show.getString(4),
+									show.getString(5), show.getString(6), show.getString(7), show.getString(8),
+									show.getString(9), show.getString(10), show.getString(11), show.getString(12)));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

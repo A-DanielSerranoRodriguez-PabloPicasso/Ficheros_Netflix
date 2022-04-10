@@ -33,7 +33,7 @@ public class ForgotPasswd {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		frame.setVisible(true);
 
@@ -41,6 +41,9 @@ public class ForgotPasswd {
 		setUIbehaviour();
 	}
 
+	/**
+	 * Sets the panels of the frame
+	 */
 	private void setUIcomponents() {
 		panel1 = new FpUserPanel();
 		panel2 = new FpPasswdPanel();
@@ -48,11 +51,17 @@ public class ForgotPasswd {
 		frame.getContentPane().add(panel2);
 	}
 
+	/**
+	 * Sets the behaviour of the components of the panels
+	 */
 	private void setUIbehaviour() {
 		UserDAO uDao = new UserDAO();
 		JButton[] p1btns = panel1.getButtons();
 		JButton[] p2btns = panel2.getButtons();
 
+		/**
+		 * Exists the frame
+		 */
 		p1btns[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -60,6 +69,9 @@ public class ForgotPasswd {
 			}
 		});
 
+		/**
+		 * Checks the user entered exists. If it does, moves to the next panel
+		 */
 		p1btns[1].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -75,6 +87,9 @@ public class ForgotPasswd {
 			}
 		});
 
+		/**
+		 * Returns to the previous panel
+		 */
 		p2btns[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -83,6 +98,10 @@ public class ForgotPasswd {
 			}
 		});
 
+		/**
+		 * Checks the entered passwords match. If they do, the panel is deleted, if not
+		 * a message pops
+		 */
 		p2btns[1].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -98,6 +117,11 @@ public class ForgotPasswd {
 			}
 		});
 
+		/**
+		 * Checks the entered passwords match. If they do, a confirmation email is sent
+		 * to the mail's user, the panel is deleted and a confirmation panel is created,
+		 * if not a message pops
+		 */
 		p2btns[2].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

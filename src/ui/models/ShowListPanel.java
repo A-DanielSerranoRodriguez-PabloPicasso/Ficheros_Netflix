@@ -26,7 +26,7 @@ public class ShowListPanel extends AbstractJPanel {
 	private int page, totalPages, size, pos1, pos2, pos3, pos4, pos5;
 	private ShowFilter filter = ShowFilter.Nada;
 
-	private Box hbUpper, hbNav, hbOpt, hbFavs, hbMid, hbBottom;
+	private Box hbUpper, hbNav, hbOpt, hbFavs, hbMid;
 	private Box vbUpper, vbMid;
 	private Box hbShow1, hbShow2, hbShow3, hbShow4, hbShow5;
 	private Box vbShow1, vbShow2, vbShow3, vbShow4, vbShow5;
@@ -247,6 +247,11 @@ public class ShowListPanel extends AbstractJPanel {
 		return btnFilter;
 	}
 
+	public JButton[] getBtnsFavs() {
+		JButton[] btns = { btnExportFavs, btnImportFavs };
+		return btns;
+	}
+
 	public JButton[] getBtnsShows() {
 		JButton[] btns = { btnMore1, btnMore2, btnMore3, btnMore4, btnMore5 };
 		return btns;
@@ -407,6 +412,9 @@ public class ShowListPanel extends AbstractJPanel {
 		return Almacen.shows.get(i);
 	}
 
+	/**
+	 * Calculates the numbers for all of the new components
+	 */
 	private void calcPosition() {
 		pos1 = 0 + (page * 5);
 		pos2 = 1 + (page * 5);
@@ -422,6 +430,13 @@ public class ShowListPanel extends AbstractJPanel {
 		chkFav4.setSelected(false);
 		chkFav5.setSelected(false);
 
+		repaintFavs();
+	}
+
+	/**
+	 * Makes sure the favorites shows are checked
+	 */
+	public void repaintFavs() {
 		for (Show userShow : user.getFavorites()) {
 			for (int i = page * 5; i < (page * 5 + 5); i++) {
 				if (Almacen.shows.get(i).getShow_id().equals(userShow.getShow_id())) {

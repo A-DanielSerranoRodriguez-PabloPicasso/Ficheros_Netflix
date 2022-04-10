@@ -45,6 +45,9 @@ public class Launcher {
 		setUIbehaviour();
 	}
 
+	/**
+	 * Sets the panels of the frame
+	 */
 	private void setUIcomponents() {
 		loginPanel = new LoginPanel();
 		registerPanel = new RegisterPanel();
@@ -52,7 +55,14 @@ public class Launcher {
 		frame.getContentPane().add(registerPanel);
 	}
 
+	/**
+	 * Sets the behaviour of the panels components
+	 */
 	private void setUIbehaviour() {
+		/**
+		 * Logs in the user. If the user's account is not activated, it will pop a
+		 * message. If it doesn't exists, an error message will be visible
+		 */
 		loginPanel.getLoginBtn().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -96,6 +106,9 @@ public class Launcher {
 			}
 		});
 
+		/**
+		 * If the user exists, a confirmation code panel will be created
+		 */
 		loginPanel.getVerifyBtn().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -113,6 +126,9 @@ public class Launcher {
 			}
 		});
 
+		/**
+		 * Makes the register panel visible, hiding the login panel
+		 */
 		loginPanel.getRegisterBtn().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -121,6 +137,9 @@ public class Launcher {
 			}
 		});
 
+		/**
+		 * A new frame will be created for reseting the password
+		 */
 		loginPanel.getForgotPasswd().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -128,6 +147,9 @@ public class Launcher {
 			}
 		});
 
+		/**
+		 * Makes the login panel visible, hiding the register panel
+		 */
 		registerPanel.getCancelBtn().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -136,6 +158,12 @@ public class Launcher {
 			}
 		});
 
+		/**
+		 * Checks all the inputs are filled. Once done, checks the user and email aren't
+		 * already registered in the database. Then, checks the passwords match. If they
+		 * do, the user is registered and a confirmation frame is created. If something
+		 * fails, an error is displayed
+		 */
 		registerPanel.getRegisterBtn().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -187,14 +215,25 @@ public class Launcher {
 		});
 	}
 
+	/**
+	 * Checks the user has a favorites files in the "exports" folder
+	 * 
+	 * @param username String that represents the username of the user
+	 * @return True if the file exists
+	 */
 	private boolean hasFile(String username) {
-		File file = new File("favorites/" + username + ".csv");
+		File file = new File("exports/" + username + ".csv");
 		return file.exists();
 	}
 
+	/**
+	 * Creates a favorites file in the "exports" folder
+	 * 
+	 * @param username String that represents the username of the user
+	 */
 	private void createFile(String username) {
 		try {
-			new File("favorites/" + username + ".csv").createNewFile();
+			new File("exports/" + username + ".csv").createNewFile();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

@@ -12,9 +12,9 @@ public class User {
 		this.passwd = passwd;
 		this.favorites = new ArrayList<Show>();
 	}
-	
+
 	public void populateShows() {
-		
+
 	}
 
 	public String getName() {
@@ -34,8 +34,16 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
-	
-	public ArrayList<Show> getFavorites(){
+
+	public ArrayList<Show> getFavorites() {
 		return favorites;
+	}
+
+	public void addShow(Show s) {
+		favorites.add(s);
+	}
+
+	public void removeShow(Show s) {
+		favorites.remove(s);
 	}
 }

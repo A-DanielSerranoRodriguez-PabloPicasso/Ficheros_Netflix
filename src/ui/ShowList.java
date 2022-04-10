@@ -7,8 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -17,6 +19,7 @@ import javax.swing.JFrame;
 
 import com.opencsv.CSVWriter;
 
+import dao.UserDAO;
 import models.Show;
 import models.User;
 import ui.models.ShowInfoPanel;
@@ -26,9 +29,9 @@ import utils.ShowFilter;
 
 public class ShowList {
 	private User usuario;
-	private File favs, favsAux;
-	private CSVWriter favsWriter, favsAuxWriter;
-	private Scanner scWriter, scAux;
+	private File favs;
+	private CSVWriter favsWriter;
+	private Scanner scWriter;
 
 	private JFrame frame;
 	private ShowListPanel showPanel;
@@ -39,13 +42,10 @@ public class ShowList {
 	 */
 	public ShowList(User usuario) {
 		this.usuario = usuario;
-		favs = new File("favorites/" + this.usuario.getName() + ".csv");
-		favsAux = new File("favorites/" + this.usuario.getName() + "-aux.csv");
+		favs = new File("exports/" + this.usuario.getName() + ".csv");
 		try {
-			favsWriter = new CSVWriter(new FileWriter(favs));
-			favsAuxWriter = new CSVWriter(new FileWriter(favsAux));
+			favsWriter = new CSVWriter(new FileWriter(favs, true));
 			scWriter = new Scanner(favs);
-			scAux = new Scanner(favsAux);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -67,6 +67,9 @@ public class ShowList {
 		setUIbehaviour();
 	}
 
+	/**
+	 * Sets the panels of the frame
+	 */
 	private void setUIcomponents() {
 		this.showPanel = new ShowListPanel(usuario);
 		frame.getContentPane().add(showPanel, "name_14215655555075");
@@ -74,11 +77,18 @@ public class ShowList {
 		frame.getContentPane().add(showInfo);
 	}
 
+	/**
+	 * Sets the behaviour of the panels components
+	 */
 	private void setUIbehaviour() {
 		JButton[] btnsNav = showPanel.getBtnsNav(), btnsMore = showPanel.getBtnsShows();
 		JButton btnFilter = showPanel.getBtnFilter();
 		JCheckBox[] chksFav = showPanel.getChksFav();
 
+		/**
+		 * Listener that activates the filter search input if the filter selected is
+		 * different from ShowFilter.Nada
+		 */
 		showPanel.getJcbFilter().addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (showPanel.getJcbFilter().getSelectedItem() == ShowFilter.Nada)
@@ -88,6 +98,9 @@ public class ShowList {
 			}
 		});
 
+		/**
+		 * Moves to the previous page
+		 */
 		btnsNav[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -96,6 +109,9 @@ public class ShowList {
 			}
 		});
 
+		/**
+		 * Moves to the next page
+		 */
 		btnsNav[1].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -104,6 +120,9 @@ public class ShowList {
 			}
 		});
 
+		/**
+		 * Gets the shows searched for, with or without filter
+		 */
 		btnFilter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -112,6 +131,9 @@ public class ShowList {
 			}
 		});
 
+		/**
+		 * Makes the shows list visible, hiding the show details
+		 */
 		showInfo.getBtnExit().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -120,6 +142,9 @@ public class ShowList {
 			}
 		});
 
+		/**
+		 * Makes the show description visible, hiding the shows list
+		 */
 		btnsMore[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -164,7 +189,14 @@ public class ShowList {
 				showInfo.updateInfo(showPanel.getM5pos());
 			}
 		});
+		/*
+		 * End
+		 */
 
+		/**
+		 * Adds or removes the shows from the favorite list, depending on if it is
+		 * selected or not
+		 */
 		chksFav[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -229,55 +261,103 @@ public class ShowList {
 					System.out.println(s.getTitle());
 			}
 		});
+		/*
+		 * End
+		 */
+
+		/**
+		 * Exports the favorites to a csv file with the name of the user in the folder
+		 * "exports"
+		 */
+		showPanel.getBtnsFavs()[0].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				exportFavs();
+			}
+		});
+
+		/**
+		 * Imports the favorites of the user from a csv file in the folder "exports"
+		 */
+		showPanel.getBtnsFavs()[1].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				importFavs();
+			}
+		});
 	}
 
+	/**
+	 * Adds the favorite to the user's ArrayList<Show>
+	 * 
+	 * @param position Int that represents the position in Almacen.shows of the show
+	 *                 we want to add
+	 */
 	private void saveFav(int position) {
-		Show s = Almacen.shows.get(position);
-		String[] line = { s.getShow_id(), s.getTitle() };
-		favsWriter.writeNext(line);
+		usuario.addShow(Almacen.shows.get(position));
+	}
+
+	/**
+	 * Removes the favorite to the user's ArrayList<Show>
+	 * 
+	 * @param position Int that represents the position in Almacen.shows of the show
+	 *                 we want to remove
+	 */
+	private void removeFav(int position) {
+		usuario.removeShow(Almacen.shows.get(position));
+	}
+
+	/**
+	 * Updates the CSVWriter and Scanner of the file
+	 */
+	private void updateSrcFavs() {
 		try {
-			favsWriter.flush();
+			favsWriter = new CSVWriter(new FileWriter(favs, true));
+			scWriter = new Scanner(favs);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void removeFav(int position) {
-		Show s = Almacen.shows.get(position);
-
-		favsAux.delete();
-		try {
-			favsAux.createNewFile();
-			favsAuxWriter = new CSVWriter(new FileWriter(favsAux));
-			scAux = new Scanner(favsAux);
-		} catch (IOException e2) {
-			e2.printStackTrace();
-		}
-
-		while (scWriter.hasNextLine()) {
-			String[] line = scWriter.nextLine().replace("\"", "").split(",");
-			if (!s.getShow_id().equals(line[0])) {
-				favsAuxWriter.writeNext(line);
-			}
+	/**
+	 * Exports the favorites, deleting the file if it exists and creating a new one
+	 * with all the favorites.
+	 */
+	private void exportFavs() {
+		if (favs.exists()) {
 			try {
-				favsAuxWriter.flush();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-
+				favs.delete();
+				favs.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
-		favs.delete();
-		try {
-			favs.createNewFile();
-			favsWriter = new CSVWriter(new FileWriter(favs));
-			scWriter = new Scanner(favs);
-			while (scAux.hasNextLine()) {
-				String[] line = scAux.nextLine().replace("\"", "").split(",");
-				favsWriter.writeNext(line);
+		updateSrcFavs();
+		for (Show s : usuario.getFavorites()) {
+			String[] line = { s.getShow_id(), s.getTitle() };
+			favsWriter.writeNext(line);
+			try {
 				favsWriter.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Imports the favorites, clearing the user's ArrayList<Show> and populating it
+	 * with the new shows from the csv file
+	 */
+	private void importFavs() {
+		ArrayList<Integer> ids = new ArrayList<>();
+		usuario.getFavorites().clear();
+		while (scWriter.hasNextLine()) {
+			String line = scWriter.nextLine().replace("\"", "");
+			ids.add(Integer.parseInt(line.split(",")[0]));
+		}
+		UserDAO.populateUserFavs(usuario, ids);
+		showPanel.repaintFavs();
 	}
 }

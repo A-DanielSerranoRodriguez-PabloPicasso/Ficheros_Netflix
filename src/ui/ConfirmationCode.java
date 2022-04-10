@@ -45,6 +45,9 @@ public class ConfirmationCode {
 		setUIcomponents();
 	}
 
+	/**
+	 * Sets the panels of the frame
+	 */
 	private void setUIcomponents() {
 		panel1 = new ConfirmPanel1(mail);
 		panel2 = new ConfirmPanel2(name);
@@ -54,10 +57,16 @@ public class ConfirmationCode {
 		setUIbehaviour();
 	}
 
+	/**
+	 * Sets the behaviour of the panels components
+	 */
 	private void setUIbehaviour() {
 		JButton[] btnP1 = panel1.getButtons();
 		JButton[] btnP2 = panel2.getButtons();
 
+		/**
+		 * Sends an email with the new confirmation code
+		 */
 		btnP1[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -66,6 +75,10 @@ public class ConfirmationCode {
 			}
 		});
 
+		/**
+		 * Makes the second panel visible, which lets the user input the confirmation
+		 * code
+		 */
 		btnP1[1].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -74,6 +87,9 @@ public class ConfirmationCode {
 			}
 		});
 
+		/**
+		 * Sends an email with the new confirmation code
+		 */
 		btnP2[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -82,6 +98,9 @@ public class ConfirmationCode {
 			}
 		});
 
+		/**
+		 * Checks the code entered is the same as the confirmation code of the user
+		 */
 		btnP2[1].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -99,14 +118,25 @@ public class ConfirmationCode {
 		});
 	}
 
+	/**
+	 * Checks the user has a favorites files in the "exports" folder
+	 * 
+	 * @param username String that represents the username of the user
+	 * @return True if the file exists
+	 */
 	private boolean hasFile(String username) {
-		File file = new File("favorites/" + username + ".csv");
+		File file = new File("exports/" + username + ".csv");
 		return file.exists();
 	}
 
+	/**
+	 * Creates a favorites file in the "exports" folder
+	 * 
+	 * @param username String that represents the username of the user
+	 */
 	private void createFile(String username) {
 		try {
-			new File("favorites/" + username + ".csv").createNewFile();
+			new File("exports/" + username + ".csv").createNewFile();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
