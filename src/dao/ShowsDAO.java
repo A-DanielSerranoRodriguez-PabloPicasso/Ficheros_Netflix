@@ -44,7 +44,6 @@ public class ShowsDAO extends AbstractDAO {
 	 * @param start  Int that represents from where we are taking the shows
 	 */
 	public void fillShows(ShowFilter filter, String what, int start) {
-		Almacen.nextSet.clear();
 		switch (filter) {
 		case Nada:
 			try (ResultSet shows = statement.executeQuery("select * from shows limit " + start + ",40;")) {
@@ -110,9 +109,6 @@ public class ShowsDAO extends AbstractDAO {
 	 */
 	private void addShow(ResultSet s) throws SQLException {
 		Almacen.shows.add(new Show(s.getString(1), s.getString(2), s.getString(3), s.getString(4), s.getString(5),
-				s.getString(6), s.getString(7), s.getString(8), s.getString(9), s.getString(10), s.getString(11),
-				s.getString(12)));
-		Almacen.nextSet.add(new Show(s.getString(1), s.getString(2), s.getString(3), s.getString(4), s.getString(5),
 				s.getString(6), s.getString(7), s.getString(8), s.getString(9), s.getString(10), s.getString(11),
 				s.getString(12)));
 	}
