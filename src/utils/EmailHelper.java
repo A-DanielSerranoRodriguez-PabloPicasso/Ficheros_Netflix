@@ -24,7 +24,12 @@ public class EmailHelper {
 		this.ses = defaultSession();
 	}
 
-	public void sendDefaultMessage(String mail, int rndm) {
+	/**
+	 * Sends a message with the verification code
+	 * @param mail
+	 * @param rndm
+	 */
+	public void verificationMessage(String mail, int rndm) {
 		Message message = new MimeMessage(ses);
 		try {
 			message.setFrom(new InternetAddress("mailfortesting1damdsr@gmail.com"));
@@ -50,6 +55,11 @@ public class EmailHelper {
 		}
 	}
 
+	/**
+	 * Creates a default session
+	 * 
+	 * @return Session
+	 */
 	private Session defaultSession() {
 		Properties prop = new Properties();
 		prop.put("mail.smtp.auth", true);
@@ -57,6 +67,7 @@ public class EmailHelper {
 		prop.put("mail.smtp.host", "smtp.gmail.com");
 		prop.put("mail.smtp.port", "25");
 		prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+		// In case of failure, this could fix it
 //		prop.put("mail.smtp.ssl.protocols","TLSv1.2");
 
 		Session s = Session.getInstance(prop, new Authenticator() {

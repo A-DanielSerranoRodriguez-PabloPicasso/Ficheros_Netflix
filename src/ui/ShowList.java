@@ -128,6 +128,7 @@ public class ShowList {
 			public void actionPerformed(ActionEvent arg0) {
 				showPanel.setFilter((ShowFilter) showPanel.getJcbFilter().getSelectedItem(),
 						showPanel.getTxtFilter().getText());
+				frame.repaint();
 			}
 		});
 

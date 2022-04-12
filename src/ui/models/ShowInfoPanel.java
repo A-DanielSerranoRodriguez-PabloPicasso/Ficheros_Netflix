@@ -13,8 +13,10 @@ public class ShowInfoPanel extends AbstractJPanel {
 	private JLabel lblTitle, lblDir, lblRating, lblDur, lblCount, lblFech, lblListed, lblCast, lblDesc;
 	private JButton btnExit;
 
-	@SuppressWarnings("static-access")
 	public ShowInfoPanel() {
+		/*
+		 * Horizontal Boxes are initialized
+		 */
 		hbTitle = defaultHB();
 		hbDir = defaultHB();
 		hbRatDur = defaultHB();
@@ -24,6 +26,9 @@ public class ShowInfoPanel extends AbstractJPanel {
 		hbDesc = defaultHB();
 		hbExit = defaultHB();
 
+		/*
+		 * JLabels are initialized
+		 */
 		lblTitle = new JLabel();
 		lblDir = new JLabel();
 		lblRating = new JLabel();
@@ -34,21 +39,37 @@ public class ShowInfoPanel extends AbstractJPanel {
 		lblCast = new JLabel();
 		lblDesc = new JLabel();
 
+		/*
+		 * JButtons are initialized
+		 */
 		btnExit = new JButton("Salir");
 
+		/*
+		 * Horizontal Boxes components are assigned
+		 */
 		addToBox(hbTitle, lblTitle);
+
 		addToBox(hbDir, lblDir);
+
 		addToBox(hbRatDur, lblRating);
 		addToBox(hbRatDur, defaultHS(40));
 		addToBox(hbRatDur, lblDur);
+
 		addToBox(hbCountFech, lblCount);
 		addToBox(hbCountFech, defaultHS(40));
 		addToBox(hbCountFech, lblFech);
+
 		addToBox(hbListed, lblListed);
+
 		addToBox(hbCast, lblCast);
+
 		addToBox(hbDesc, lblDesc);
+
 		addToBox(hbExit, btnExit);
 
+		/*
+		 * JFrame components are assigned
+		 */
 		addVG();
 		add(hbTitle);
 		addVS(40);
@@ -67,6 +88,11 @@ public class ShowInfoPanel extends AbstractJPanel {
 		add(hbExit);
 	}
 
+	/**
+	 * Updates the show information of the panel
+	 * 
+	 * @param i (Int) Position of the show in "Almacen.shows"
+	 */
 	public void updateInfo(int i) {
 		Show s = Almacen.shows.get(i);
 		lblTitle.setText(s.getTitle());
@@ -80,6 +106,11 @@ public class ShowInfoPanel extends AbstractJPanel {
 		lblDesc.setText(s.getDescription());
 	}
 
+	/**
+	 * Retrieves the exit button from the panel
+	 * 
+	 * @return JButton
+	 */
 	public JButton getBtnExit() {
 		return btnExit;
 	}

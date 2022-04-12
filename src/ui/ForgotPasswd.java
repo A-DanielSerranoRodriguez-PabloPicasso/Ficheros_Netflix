@@ -109,7 +109,7 @@ public class ForgotPasswd {
 					EmailHelper emailHelper = new EmailHelper();
 					int rndm = (int) ((Math.random() * 100000) + 1);
 					uDao.updatePasswd(name, new String(panel2.getPasswd()));
-					emailHelper.sendDefaultMessage(mail, rndm);
+					emailHelper.verificationMessage(mail, rndm);
 
 					frame.dispose();
 				} else
@@ -129,7 +129,7 @@ public class ForgotPasswd {
 					EmailHelper emailHelper = new EmailHelper();
 					int rndm = (int) ((Math.random() * 100000) + 1);
 					uDao.updatePasswd(name, new String(panel2.getPasswd()));
-					emailHelper.sendDefaultMessage(mail, rndm);
+					emailHelper.verificationMessage(mail, rndm);
 					new ConfirmationCode(name, mail, rndm);
 					frame.dispose();
 

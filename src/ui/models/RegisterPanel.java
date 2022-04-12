@@ -18,8 +18,9 @@ public class RegisterPanel extends AbstractJPanel {
 	private JButton btnCancel, btnRegister;
 
 	public RegisterPanel() {
-		super();
-
+		/**
+		 * Horizontal Boxes are initialized
+		 */
 		hbTitle = defaultHB();
 		hbName = defaultHB();
 		hbMail = defaultHB();
@@ -28,8 +29,14 @@ public class RegisterPanel extends AbstractJPanel {
 		hbButtons = defaultHB();
 		hbError = defaultHB();
 
+		/**
+		 * Vertical Boxes are initialized
+		 */
 		vbData = defaultVB();
 
+		/**
+		 * JLabels are initialized
+		 */
 		lblTitle = new JLabel("Registrate en Nutflix");
 		lblName = new JLabel("Nombre: ");
 		lblMail = new JLabel("Correo electronico: ");
@@ -39,25 +46,37 @@ public class RegisterPanel extends AbstractJPanel {
 		lblUserExists = new JLabel("El usuario o correo ya existen");
 		lblPasswdNotMatch = new JLabel("Las contras no coinciden");
 
+		lblEmpty.setVisible(false);
+		lblUserExists.setVisible(false);
+		lblPasswdNotMatch.setVisible(false);
+
+		/**
+		 * JTextFields are initialized
+		 */
 		txtName = new JTextField(15);
 		txtName.setMaximumSize(new Dimension(200, 25));
 
 		txtMail = new JTextField(15);
 		txtMail.setMaximumSize(new Dimension(200, 25));
 
+		/**
+		 * JPasswordFields are initialized
+		 */
 		pwdPasswd = new JPasswordField(15);
 		pwdPasswd.setMaximumSize(new Dimension(200, 25));
 
 		pwdConfirmPwd = new JPasswordField(15);
 		pwdConfirmPwd.setMaximumSize(new Dimension(200, 25));
 
+		/**
+		 * JButtons are initialized
+		 */
 		btnCancel = new JButton("Cancelar");
 		btnRegister = new JButton("Registrarse");
 
-		lblEmpty.setVisible(false);
-		lblUserExists.setVisible(false);
-		lblPasswdNotMatch.setVisible(false);
-
+		/**
+		 * The components of the Horizontal Boxes are assigned
+		 */
 		addToBox(hbTitle, lblTitle);
 
 		addToBox(hbName, lblName);
@@ -84,6 +103,9 @@ public class RegisterPanel extends AbstractJPanel {
 		addToBox(hbButtons, Box.createHorizontalStrut(30));
 		addToBox(hbButtons, btnRegister);
 
+		/**
+		 * The components of the Vertical Boxes are assigned
+		 */
 		addToBox(vbData, hbName);
 		addToBox(vbData, Box.createVerticalStrut(20));
 		addToBox(vbData, hbMail);
@@ -96,6 +118,9 @@ public class RegisterPanel extends AbstractJPanel {
 		addToBox(vbData, Box.createVerticalStrut(20));
 		addToBox(vbData, hbButtons);
 
+		/**
+		 * The components of the JFrame are assigned
+		 */
 		addVG();
 		add(hbTitle);
 		addVG();
@@ -103,24 +128,42 @@ public class RegisterPanel extends AbstractJPanel {
 		addVG();
 	}
 
-	public JButton getCancelBtn() {
-		return btnCancel;
+	/**
+	 * Retrieves the buttons of the panel
+	 * 
+	 * @return JButton[] with the cancel and register button
+	 */
+	public JButton[] getButtons() {
+		JButton[] btns = { btnCancel, btnRegister };
+		return btns;
 	}
 
-	public JButton getRegisterBtn() {
-		return btnRegister;
-	}
-
+	/**
+	 * Retrieves the text fields of the panel
+	 * 
+	 * @return JTextField[] with the name and mail fields
+	 */
 	public JTextField[] getTexts() {
 		JTextField[] txts = { txtName, txtMail };
 		return txts;
 	}
 
+	/**
+	 * Retrieves the password fields of the panel
+	 * 
+	 * @return JTextField[] with the password and confirm password fields
+	 */
 	public JPasswordField[] getPasswds() {
 		JPasswordField[] passwds = { pwdPasswd, pwdConfirmPwd };
 		return passwds;
 	}
 
+	/**
+	 * Retrieves the error labels of the panel
+	 * 
+	 * @return JLabel[] with the empty, user exists and passwords doesn't match
+	 *         labels
+	 */
 	public JLabel[] getErrorLbls() {
 		JLabel[] errs = { lblEmpty, lblUserExists, lblPasswdNotMatch };
 		return errs;

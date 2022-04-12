@@ -15,26 +15,41 @@ public class FpPasswdPanel extends AbstractJPanel {
 	private JButton btnBack, btnConfirm, btnConfValid;
 
 	public FpPasswdPanel() {
+		/**
+		 * Horizontal Boxes are initialized
+		 */
 		hbTitle = defaultHB();
 		hbSubTitle = defaultHB();
 		hbPasswd = defaultHB();
 		hbPasswdConfirm = defaultHB();
 		hbButtons = defaultHB();
 
+		/**
+		 * JLables are initialized
+		 */
 		lblTitle = new JLabel("Introduce tu nueva contra.");
 		lblSubTitle = new JLabel("Tendras que volver a activar la cuenta una vez cambiada.");
 		lblPasswd = new JLabel("Contra:");
 		lblPasswdConfirm = new JLabel("Confirma contra:");
 
+		/**
+		 * JPasswordFields are initialized
+		 */
 		pswPasswd = new JPasswordField(15);
 		pswPasswd.setMaximumSize(new Dimension(100, 25));
 		pswPasswdConfirm = new JPasswordField(15);
 		pswPasswdConfirm.setMaximumSize(new Dimension(100, 25));
 
+		/**
+		 * JButtons are initialized
+		 */
 		btnBack = new JButton("Volver");
 		btnConfirm = new JButton("Confirmar");
 		btnConfValid = new JButton("Confirmar y validar");
 
+		/**
+		 * The components of the Horizontal Boxes are assigned
+		 */
 		addToBox(hbTitle, lblTitle);
 		addToBox(hbSubTitle, lblSubTitle);
 
@@ -52,6 +67,9 @@ public class FpPasswdPanel extends AbstractJPanel {
 		addToBox(hbButtons, Box.createHorizontalStrut(15));
 		addToBox(hbButtons, btnConfValid);
 
+		/**
+		 * The components of the JFrame are assigned
+		 */
 		addVG();
 		add(hbTitle);
 		add(Box.createVerticalStrut(5));
@@ -65,20 +83,40 @@ public class FpPasswdPanel extends AbstractJPanel {
 		addVG();
 	}
 
+	/**
+	 * Retrieves the password fields of the panel
+	 * 
+	 * @return JPasswordField[] with the password and confirm password fields
+	 */
 	public JPasswordField[] getPasswds() {
 		JPasswordField[] passwds = { pswPasswd, pswPasswdConfirm };
 		return passwds;
 	}
 
+	/**
+	 * Retrieves the buttons of the panel
+	 * 
+	 * @return JButton[] with the back, confirm and confirm and validate buttons
+	 */
 	public JButton[] getButtons() {
 		JButton[] btns = { btnBack, btnConfirm, btnConfValid };
 		return btns;
 	}
 
+	/**
+	 * Checks that the passwords match
+	 * 
+	 * @return True if match, false if not
+	 */
 	public boolean passwdMatch() {
 		return new String(pswPasswd.getPassword()).equals(new String(pswPasswdConfirm.getPassword()));
 	}
 
+	/**
+	 * Retrieves the password from the password field
+	 * 
+	 * @return Char[] with the password
+	 */
 	public char[] getPasswd() {
 		return pswPasswd.getPassword();
 	}

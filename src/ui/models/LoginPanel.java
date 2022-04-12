@@ -18,37 +18,59 @@ public class LoginPanel extends AbstractJPanel {
 	private JButton btnRegister, btnLogin, btnVerify, btnForgotPasswd;
 
 	public LoginPanel() {
-		super();
-
+		/**
+		 * Horizontal Boxes are initialized
+		 */
 		hbTitle = defaultHB();
 		hbName = defaultHB();
 		hbPasswd = defaultHB();
 		hbButtons = defaultHB();
 		hbError = defaultHB();
 
+		/**
+		 * Vertical Boxes are initialized
+		 */
 		vbData = defaultVB();
 
+		/**
+		 * JLabels are initialized
+		 */
 		lblTitle = new JLabel("Nutflix");
 		lblName = new JLabel("Nombre: ");
 		lblPasswd = new JLabel("Contra: ");
 		lblError = new JLabel("Usuario o contra incorrectos");
 		lblEmpty = new JLabel("Campos vacios");
 
+		/**
+		 * JButtons are initialized
+		 */
 		btnRegister = new JButton("Registrarse");
 		btnLogin = new JButton("Iniciar sesion");
 		btnVerify = new JButton("Verificar cuenta");
 		btnVerify.setVisible(false);
 		btnForgotPasswd = new JButton("I forgor");
 
+		/**
+		 * JTextFields are initialized
+		 */
 		txtName = new JTextField(15);
 		txtName.setMaximumSize(new Dimension(200, 25));
 
+		/**
+		 * JPasswordFields are initialized
+		 */
 		pwdPasswd = new JPasswordField(15);
 		pwdPasswd.setMaximumSize(new Dimension(200, 25));
 
+		/**
+		 * JLables are initialized
+		 */
 		lblEmpty.setVisible(false);
 		lblError.setVisible(false);
 
+		/**
+		 * The components of the Horizontal Boxes are assigned
+		 */
 		addToBox(hbTitle, lblTitle);
 
 		addToBox(hbName, lblName);
@@ -67,6 +89,9 @@ public class LoginPanel extends AbstractJPanel {
 		addToBox(hbButtons, btnLogin);
 		addToBox(hbButtons, btnVerify);
 
+		/**
+		 * The components of the Vertical Box are assigned
+		 */
 		addToBox(vbData, hbName);
 		addToBox(vbData, Box.createVerticalStrut(20));
 		addToBox(vbData, hbPasswd);
@@ -75,6 +100,9 @@ public class LoginPanel extends AbstractJPanel {
 		addToBox(vbData, Box.createVerticalStrut(20));
 		addToBox(vbData, hbButtons);
 
+		/**
+		 * The components of the JFrame are assigned
+		 */
 		addVG();
 		add(hbTitle);
 		addVG();
@@ -83,30 +111,40 @@ public class LoginPanel extends AbstractJPanel {
 		addVG();
 	}
 
-	public JButton getLoginBtn() {
-		return btnLogin;
+	/**
+	 * Retrieves the buttons of the panel
+	 * 
+	 * @return JButton[] with the login, register, verify and forgot password
+	 *         buttons
+	 */
+	public JButton[] getButtons() {
+		JButton[] btns = { btnLogin, btnRegister, btnVerify, btnForgotPasswd };
+		return btns;
 	}
 
-	public JButton getRegisterBtn() {
-		return btnRegister;
-	}
-
-	public JButton getVerifyBtn() {
-		return btnVerify;
-	}
-	
-	public JButton getForgotPasswd() {
-		return btnForgotPasswd;
-	}
-
-	public JTextField getUsername() {
+	/**
+	 * Retrieves the text field of the panel
+	 * 
+	 * @return JTextField
+	 */
+	public JTextField getTxtField() {
 		return txtName;
 	}
 
+	/**
+	 * Retrieves the password field of the panel
+	 * 
+	 * @return JPasswordField
+	 */
 	public JPasswordField getPasswd() {
 		return pwdPasswd;
 	}
 
+	/**
+	 * Retrieves the error labels of the panel
+	 * 
+	 * @return JLabel[] with the empty and common error labels
+	 */
 	public JLabel[] getErrorLbls() {
 		JLabel[] errs = { lblEmpty, lblError };
 		return errs;

@@ -31,7 +31,7 @@ public class ShowListPanel extends AbstractJPanel {
 	private Box hbShow1, hbShow2, hbShow3, hbShow4, hbShow5;
 	private Box vbShow1, vbShow2, vbShow3, vbShow4, vbShow5;
 	private Box hbS1T, hbS2T, hbS3T, hbS4T, hbS5T, hbS1D, hbS2D, hbS3D, hbS4D, hbS5D, hbS1M, hbS2M, hbS3M, hbS4M, hbS5M;
-	private JLabel lblTitle, lblShows, lblFilter;
+	private JLabel lblTitle, lblFilter;
 	private JComboBox<ShowFilter> jcbFilter;
 	private JTextField txtFilter;
 	private JButton btnFilter, btnNextP, btnPreviousP, btnExportFavs, btnImportFavs;
@@ -39,6 +39,8 @@ public class ShowListPanel extends AbstractJPanel {
 	private JCheckBox chkFav1, chkFav2, chkFav3, chkFav4, chkFav5;
 
 	public ShowListPanel(User user) {
+		ImageIcon plus = new ImageIcon("resources/img/plus.png");
+
 		sDao = new ShowsDAO();
 		sDao.fillShows(filter, null, 0);
 		this.user = user;
@@ -46,58 +48,21 @@ public class ShowListPanel extends AbstractJPanel {
 		this.size = Almacen.shows.size();
 		this.totalPages = (int) (Math.ceil((double) size / (double) (8))) + 1;
 
-		hbFavs = defaultHB();
-		btnExportFavs = new JButton("Exportar favoritos");
-		btnImportFavs = new JButton("Importar favoritos");
-
-		addToBox(hbFavs, btnExportFavs);
-		addToBox(hbFavs, btnImportFavs);
-
-		ImageIcon plus = new ImageIcon("resources/img/plus.png");
+		/*
+		 * Horizontal Boxes are initialized
+		 */
 		hbUpper = defaultHB();
-		vbUpper = defaultVB();
-		hbNav = defaultHB();
-		btnPreviousP = new JButton("<");
-		lblTitle = new JLabel("Pagina " + (page + 1) + " de " + totalPages);
-		btnNextP = new JButton(">");
-		addToBox(hbNav, btnPreviousP);
-		addToBox(hbNav, lblTitle);
-		addToBox(hbNav, btnNextP);
-		addToBox(vbUpper, hbNav);
-
-		hbOpt = defaultHB();
-		lblShows = new JLabel("Shows");
-		lblFilter = new JLabel("Filtro:");
-		jcbFilter = new JComboBox<ShowFilter>(new DefaultComboBoxModel<ShowFilter>(ShowFilter.values()));
-		btnFilter = new JButton(new ImageIcon("resources/img/filter.png"));
-		btnFilter.setBorder(BorderFactory.createEmptyBorder());
-		btnFilter.setContentAreaFilled(false);
-		txtFilter = new JTextField(15);
-		txtFilter.setMaximumSize(new Dimension(100, 25));
-		txtFilter.setEnabled(false);
-		addToBox(hbOpt, lblShows);
-		addToBox(hbOpt, lblFilter);
-		addToBox(hbOpt, jcbFilter);
-		addToBox(hbOpt, txtFilter);
-		addToBox(hbOpt, btnFilter);
-		addToBox(vbUpper, hbOpt);
-		addToBox(vbUpper, hbFavs);
-
-		addToBox(hbUpper, vbUpper);
-
 		hbMid = defaultHB();
-		vbMid = defaultVB();
+
+		hbNav = defaultHB();
+		hbOpt = defaultHB();
+		hbFavs = defaultHB();
+
 		hbShow1 = defaultHB();
 		hbShow2 = defaultHB();
 		hbShow3 = defaultHB();
 		hbShow4 = defaultHB();
 		hbShow5 = defaultHB();
-
-		vbShow1 = defaultVB();
-		vbShow2 = defaultVB();
-		vbShow3 = defaultVB();
-		vbShow4 = defaultVB();
-		vbShow5 = defaultVB();
 
 		hbS1T = defaultHB();
 		hbS2T = defaultHB();
@@ -117,12 +82,34 @@ public class ShowListPanel extends AbstractJPanel {
 		hbS4M = defaultHB();
 		hbS5M = defaultHB();
 
+		/*
+		 * Vertical Boxes are initialized
+		 */
+		vbUpper = defaultVB();
+		vbMid = defaultVB();
+
+		vbShow1 = defaultVB();
+		vbShow2 = defaultVB();
+		vbShow3 = defaultVB();
+		vbShow4 = defaultVB();
+		vbShow5 = defaultVB();
+
+		/*
+		 * JButtons are initialized
+		 */
+		btnPreviousP = new JButton("<");
+		btnNextP = new JButton(">");
+		btnFilter = new JButton(new ImageIcon("resources/img/filter.png"));
+		btnExportFavs = new JButton("Exportar favoritos");
+		btnImportFavs = new JButton("Importar favoritos");
 		btnMore1 = new JButton(plus);
 		btnMore2 = new JButton(plus);
 		btnMore3 = new JButton(plus);
 		btnMore4 = new JButton(plus);
 		btnMore5 = new JButton(plus);
 
+		btnFilter.setBorder(BorderFactory.createEmptyBorder());
+		btnFilter.setContentAreaFilled(false);
 		btnMore1.setBorder(BorderFactory.createEmptyBorder());
 		btnMore1.setContentAreaFilled(false);
 		btnMore2.setBorder(BorderFactory.createEmptyBorder());
@@ -134,6 +121,27 @@ public class ShowListPanel extends AbstractJPanel {
 		btnMore5.setBorder(BorderFactory.createEmptyBorder());
 		btnMore5.setContentAreaFilled(false);
 
+		/*
+		 * JComboBoxes are initialized
+		 */
+		jcbFilter = new JComboBox<ShowFilter>(new DefaultComboBoxModel<ShowFilter>(ShowFilter.values()));
+
+		/*
+		 * JLabels are initialized
+		 */
+		lblTitle = new JLabel("Pagina " + (page + 1) + " de " + totalPages);
+		lblFilter = new JLabel("Filtro:");
+
+		/*
+		 * JTextFields are initialized
+		 */
+		txtFilter = new JTextField(15);
+		txtFilter.setMaximumSize(new Dimension(100, 25));
+		txtFilter.setEnabled(false);
+
+		/*
+		 * JCheckBoxes are initialized
+		 */
 		chkFav1 = new JCheckBox();
 		chkFav2 = new JCheckBox();
 		chkFav3 = new JCheckBox();
@@ -142,23 +150,22 @@ public class ShowListPanel extends AbstractJPanel {
 
 		updateContents();
 
-		addToBox(vbShow1, hbS1T);
-		addToBox(vbShow2, hbS2T);
-		addToBox(vbShow3, hbS3T);
-		addToBox(vbShow4, hbS4T);
-		addToBox(vbShow5, hbS5T);
+		/*
+		 * Horizontal Boxes components are assigned
+		 */
+		// ## Added to a Vertical Box
+		addToBox(hbNav, btnPreviousP);
+		addToBox(hbNav, lblTitle);
+		addToBox(hbNav, btnNextP);
 
-		addToBox(vbShow1, hbS1D);
-		addToBox(vbShow2, hbS2D);
-		addToBox(vbShow3, hbS3D);
-		addToBox(vbShow4, hbS4D);
-		addToBox(vbShow5, hbS5D);
+		addToBox(hbOpt, lblFilter);
+		addToBox(hbOpt, jcbFilter);
+		addToBox(hbOpt, txtFilter);
+		addToBox(hbOpt, btnFilter);
 
-		addToBox(vbShow1, hbS1M);
-		addToBox(vbShow2, hbS2M);
-		addToBox(vbShow3, hbS3M);
-		addToBox(vbShow4, hbS4M);
-		addToBox(vbShow5, hbS5M);
+		addToBox(hbFavs, btnExportFavs);
+		addToBox(hbFavs, btnImportFavs);
+		// ##
 
 		addToBox(hbS1M, new JLabel("Ver mas:"));
 		addToBox(hbS2M, new JLabel("Ver mas:"));
@@ -190,6 +197,34 @@ public class ShowListPanel extends AbstractJPanel {
 		addToBox(hbShow4, vbShow4);
 		addToBox(hbShow5, vbShow5);
 
+		addToBox(hbUpper, vbUpper);
+		addToBox(hbMid, vbMid);
+
+		/*
+		 * Vertical Boxes components are assigned
+		 */
+		addToBox(vbUpper, hbNav);
+		addToBox(vbUpper, hbOpt);
+		addToBox(vbUpper, hbFavs);
+
+		addToBox(vbShow1, hbS1T);
+		addToBox(vbShow2, hbS2T);
+		addToBox(vbShow3, hbS3T);
+		addToBox(vbShow4, hbS4T);
+		addToBox(vbShow5, hbS5T);
+
+		addToBox(vbShow1, hbS1D);
+		addToBox(vbShow2, hbS2D);
+		addToBox(vbShow3, hbS3D);
+		addToBox(vbShow4, hbS4D);
+		addToBox(vbShow5, hbS5D);
+
+		addToBox(vbShow1, hbS1M);
+		addToBox(vbShow2, hbS2M);
+		addToBox(vbShow3, hbS3M);
+		addToBox(vbShow4, hbS4M);
+		addToBox(vbShow5, hbS5M);
+
 		addToBox(vbMid, hbShow1);
 		addToBox(vbMid, Box.createVerticalGlue());
 		addToBox(vbMid, hbShow2);
@@ -200,8 +235,9 @@ public class ShowListPanel extends AbstractJPanel {
 		addToBox(vbMid, Box.createVerticalGlue());
 		addToBox(vbMid, hbShow5);
 
-		addToBox(hbMid, vbMid);
-
+		/*
+		 * JFrame components are assigned
+		 */
 		add(Box.createVerticalStrut(40));
 		add(hbUpper);
 		addVG();
@@ -209,11 +245,76 @@ public class ShowListPanel extends AbstractJPanel {
 		addVG();
 	}
 
+	/**
+	 * Retrieves the filter combo box
+	 * 
+	 * @return JComboBox
+	 */
+	public JComboBox<ShowFilter> getJcbFilter() {
+		return jcbFilter;
+	}
+
+	/**
+	 * Retrieves the filter text field
+	 * 
+	 * @return JTextField
+	 */
+	public JTextField getTxtFilter() {
+		return txtFilter;
+	}
+
+	/**
+	 * Retrieves the filter button
+	 * 
+	 * @return JButton
+	 */
+	public JButton getBtnFilter() {
+		return btnFilter;
+	}
+
+	/**
+	 * Retrieves the navigation buttons
+	 * 
+	 * @return JButton[] with previous and next buttons
+	 */
 	public JButton[] getBtnsNav() {
 		JButton[] nav = { btnPreviousP, btnNextP };
 		return nav;
 	}
 
+	/**
+	 * Retrieves the favorites buttons
+	 * 
+	 * @return JButton[] with the export and import buttons
+	 */
+	public JButton[] getBtnsFavs() {
+		JButton[] btns = { btnExportFavs, btnImportFavs };
+		return btns;
+	}
+
+	/**
+	 * Retrieves the information buttons
+	 * 
+	 * @return JButton with the more 1, 2 ,3, 4 and 5 buttons
+	 */
+	public JButton[] getBtnsShows() {
+		JButton[] btns = { btnMore1, btnMore2, btnMore3, btnMore4, btnMore5 };
+		return btns;
+	}
+
+	/**
+	 * Retrieves the check box to make a show favorite
+	 * 
+	 * @return JCheckBox[] with the check 1, 2, 3, 4 and 5 boxes
+	 */
+	public JCheckBox[] getChksFav() {
+		JCheckBox[] chks = { chkFav1, chkFav2, chkFav3, chkFav4, chkFav5 };
+		return chks;
+	}
+
+	/**
+	 * Moves to the next page
+	 */
 	public void nextPage() {
 		if (page * 8 < size) {
 			page++;
@@ -228,6 +329,9 @@ public class ShowListPanel extends AbstractJPanel {
 		}
 	}
 
+	/**
+	 * Moves to the previous page
+	 */
 	public void prevousPage() {
 		if (page > 0) {
 			page--;
@@ -235,33 +339,12 @@ public class ShowListPanel extends AbstractJPanel {
 		}
 	}
 
-	public JComboBox<ShowFilter> getJcbFilter() {
-		return jcbFilter;
-	}
-
-	public JTextField getTxtFilter() {
-		return txtFilter;
-	}
-
-	public JButton getBtnFilter() {
-		return btnFilter;
-	}
-
-	public JButton[] getBtnsFavs() {
-		JButton[] btns = { btnExportFavs, btnImportFavs };
-		return btns;
-	}
-
-	public JButton[] getBtnsShows() {
-		JButton[] btns = { btnMore1, btnMore2, btnMore3, btnMore4, btnMore5 };
-		return btns;
-	}
-
-	public JCheckBox[] getChksFav() {
-		JCheckBox[] chks = { chkFav1, chkFav2, chkFav3, chkFav4, chkFav5 };
-		return chks;
-	}
-
+	/**
+	 * Updates the filter applied and the shows
+	 * 
+	 * @param filter ShowFilter that represents what filter is used
+	 * @param what   String that represents what is searched with that filter
+	 */
 	public void setFilter(ShowFilter filter, String what) {
 		this.filter = filter;
 		this.textFilter = what;
@@ -271,27 +354,55 @@ public class ShowListPanel extends AbstractJPanel {
 		updateContents();
 	}
 
+	/**
+	 * Retrieves the numeric position of the show
+	 * 
+	 * @return Int
+	 */
 	public int getM1pos() {
 		return (pos1);
 	}
 
+	/**
+	 * Retrieves the numeric position of the show
+	 * 
+	 * @return Int
+	 */
 	public int getM2pos() {
 		return (pos2);
 	}
 
+	/**
+	 * Retrieves the numeric position of the show
+	 * 
+	 * @return Int
+	 */
 	public int getM3pos() {
 		return (pos3);
 	}
 
+	/**
+	 * Retrieves the numeric position of the show
+	 * 
+	 * @return Int
+	 */
 	public int getM4pos() {
 		return (pos4);
 	}
 
+	/**
+	 * Retrieves the numeric position of the show
+	 * 
+	 * @return Int
+	 */
 	public int getM5pos() {
 		return (pos5);
 	}
 
-	public void updateContents() {
+	/**
+	 * Updates the contents of the view
+	 */
+	private void updateContents() {
 		calcPosition();
 
 		lblTitle.setText("Pagina " + (page + 1) + " de " + totalPages);
@@ -408,10 +519,6 @@ public class ShowListPanel extends AbstractJPanel {
 		repaint();
 	}
 
-	private Show getShow(int i) {
-		return Almacen.shows.get(i);
-	}
-
 	/**
 	 * Calculates the numbers for all of the new components
 	 */
@@ -463,11 +570,16 @@ public class ShowListPanel extends AbstractJPanel {
 					}
 				}
 			}
-			for (Show setShow : Almacen.nextSet) {
-				if (userShow.getShow_id().equals(setShow.getShow_id())) {
-
-				}
-			}
 		}
+	}
+
+	/**
+	 * Retrieves the show from "Almacen.shows"
+	 * 
+	 * @param i (Int) Position of the show to retrieve
+	 * @return Show
+	 */
+	private Show getShow(int i) {
+		return Almacen.shows.get(i);
 	}
 }
