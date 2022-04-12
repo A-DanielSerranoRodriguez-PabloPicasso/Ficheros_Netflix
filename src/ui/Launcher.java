@@ -16,6 +16,7 @@ import models.User;
 import ui.models.LoginPanel;
 import ui.models.RegisterPanel;
 import utils.EmailHelper;
+import utils.Encrypter;
 
 public class Launcher {
 
@@ -75,7 +76,7 @@ public class Launcher {
 					errs[0].setVisible(true);
 					errs[1].setVisible(false);
 				} else {
-					User user = uDao.login(username, passwd);
+					User user = uDao.login(username, Encrypter.toHexString(passwd));
 					if (uDao.userExists(username)) {
 						if (uDao.isActive(username)) {
 							if (user != null) {
@@ -182,7 +183,7 @@ public class Launcher {
 						if (userData[2].equals(userData[3])) {
 							int rndm = (int) ((Math.random() * 100000) + 1);
 
-							uDao.register(userData[0], userData[1], userData[2], rndm);
+							uDao.register(userData[0], userData[1], Encrypter.toHexString(userData[2]), rndm);
 
 							errs[0].setVisible(false);
 							errs[1].setVisible(false);

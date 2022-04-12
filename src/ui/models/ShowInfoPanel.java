@@ -1,7 +1,5 @@
 package ui.models;
 
-import java.awt.Dimension;
-
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
