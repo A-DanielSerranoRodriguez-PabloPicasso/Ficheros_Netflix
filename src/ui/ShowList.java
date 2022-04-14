@@ -16,8 +16,7 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-
-import com.opencsv.CSVWriter;
+import javax.swing.JOptionPane;
 
 import dao.UserDAO;
 import models.Show;
@@ -30,7 +29,7 @@ import utils.ShowFilter;
 public class ShowList {
 	private User usuario;
 	private File favs;
-	private CSVWriter favsWriter;
+	private FileWriter favsWriter;
 	private Scanner scWriter;
 
 	private JFrame frame;
@@ -44,7 +43,7 @@ public class ShowList {
 		this.usuario = usuario;
 		favs = new File("exports/" + this.usuario.getName() + ".csv");
 		try {
-			favsWriter = new CSVWriter(new FileWriter(favs, true));
+			favsWriter = new FileWriter(favs, true);
 			scWriter = new Scanner(favs);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -313,7 +312,7 @@ public class ShowList {
 	 */
 	private void updateSrcFavs() {
 		try {
-			favsWriter = new CSVWriter(new FileWriter(favs, true));
+			favsWriter = new FileWriter(favs, true);
 			scWriter = new Scanner(favs);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -327,6 +326,30 @@ public class ShowList {
 	 * with all the favorites.
 	 */
 	private void exportFavs() {
+		String[] opt = { ",", ";", "TAB" };
+		int choice = JOptionPane.showOptionDialog(frame, "Elige el separador", null, JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, opt, 0);
+		UserDAO uDao = new UserDAO();
+
+		switch (choice) {
+		case 0:
+			usuario.setSeparator(",");
+			uDao.setSeparator(usuario.getName(), ",");
+			break;
+
+		case 1:
+			usuario.setSeparator(";");
+			uDao.setSeparator(usuario.getName(), ";");
+			break;
+
+		case 2:
+			usuario.setSeparator("\t");
+			uDao.setSeparator(usuario.getName(), "\t");
+			break;
+
+		default:
+			System.out.println("bitch");
+		}
 		if (favs.exists()) {
 			try {
 				favs.delete();
@@ -338,11 +361,11 @@ public class ShowList {
 		updateSrcFavs();
 		for (Show s : usuario.getFavorites()) {
 			String[] line = { s.getShow_id(), s.getTitle() };
-			favsWriter.writeNext(line);
 			try {
+				favsWriter.write(line[0] + usuario.getSeparator() + line[1] + "\n");
 				favsWriter.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
 		}
 	}
@@ -354,9 +377,10 @@ public class ShowList {
 	private void importFavs() {
 		ArrayList<Integer> ids = new ArrayList<>();
 		usuario.getFavorites().clear();
+		scWriter.useDelimiter(usuario.getSeparator());
 		while (scWriter.hasNextLine()) {
 			String line = scWriter.nextLine().replace("\"", "");
-			ids.add(Integer.parseInt(line.split(",")[0]));
+			ids.add(Integer.parseInt(line.split(usuario.getSeparator())[0]));
 		}
 		UserDAO.populateUserFavs(usuario, ids);
 		showPanel.repaintFavs();

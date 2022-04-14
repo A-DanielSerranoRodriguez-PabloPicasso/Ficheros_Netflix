@@ -89,6 +89,7 @@ public class Launcher {
 									createFile(username);
 								}
 								frame.dispose();
+								user.setSeparator(uDao.getSeparator(username));
 								new ShowList(user);
 							} else {
 								errs[0].setVisible(false);

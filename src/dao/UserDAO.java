@@ -170,6 +170,37 @@ public class UserDAO extends AbstractDAO {
 	}
 
 	/**
+	 * Retrieves the separator the user uses for its CSV
+	 * 
+	 * @param username String that represents the username of the user
+	 * @return String that represents the separator
+	 */
+	public String getSeparator(String username) {
+		try (ResultSet user = getUserData("username", username)) {
+			if (user.next()) {
+				return user.getString("separator_char");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Sets the separator for the user
+	 * 
+	 * @param username  String that represents the username of the user
+	 * @param separator String that represents the separator used
+	 */
+	public void setSeparator(String username, String separator) {
+		try {
+			statement.execute("update users set separator_char='" + separator + "' where username='" + username + "';");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Updates the user password
 	 * 
 	 * @param identification String that represents the username or mail

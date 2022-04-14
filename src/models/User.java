@@ -3,7 +3,7 @@ package models;
 import java.util.ArrayList;
 
 public class User {
-	private String name, passwd, email;
+	private String name, passwd, email, separator;
 	private ArrayList<Show> favorites;
 
 	public User(String name, String email, String passwd) {
@@ -11,6 +11,7 @@ public class User {
 		this.email = email;
 		this.passwd = passwd;
 		this.favorites = new ArrayList<Show>();
+		this.separator = "";
 	}
 
 	public void populateShows() {
@@ -45,5 +46,13 @@ public class User {
 
 	public void removeShow(Show s) {
 		favorites.remove(s);
+	}
+
+	public String getSeparator() {
+		return separator;
+	}
+
+	public void setSeparator(String separator) {
+		this.separator = separator;
 	}
 }
