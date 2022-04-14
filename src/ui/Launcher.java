@@ -67,7 +67,6 @@ public class Launcher {
 		 * message. If it doesn't exists, an error message will be visible
 		 */
 		lBtns[0].addActionListener(new ActionListener() {
-			// TODO create folder "exports" != exists
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				UserDAO uDao = new UserDAO();
@@ -169,9 +168,7 @@ public class Launcher {
 		 * do, the user is registered and a confirmation frame is created. If something
 		 * fails, an error is displayed
 		 */
-		rBtns[0].addActionListener(new ActionListener() {
-			// TODO create folder "exports" != exists
-			// TODO check why the fuck the code is 4 digits
+		rBtns[1].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JLabel[] errs = registerPanel.getErrorLbls();

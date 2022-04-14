@@ -48,6 +48,7 @@ public class ShowList {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		initialize();
 	}
 
@@ -71,8 +72,8 @@ public class ShowList {
 	 */
 	private void setUIcomponents() {
 		this.showPanel = new ShowListPanel(usuario);
+		this.showInfo = new ShowInfoPanel(usuario);
 		frame.getContentPane().add(showPanel, "name_14215655555075");
-		this.showInfo = new ShowInfoPanel();
 		frame.getContentPane().add(showInfo);
 	}
 
@@ -84,7 +85,11 @@ public class ShowList {
 		JButton btnFilter = showPanel.getBtnFilter();
 		JCheckBox[] chksFav = showPanel.getChksFav();
 
-		/**
+		if (usuario.getSeparator() == null) {
+			showPanel.getBtnsFavs()[1].setEnabled(false);
+		}
+
+		/*
 		 * Listener that activates the filter search input if the filter selected is
 		 * different from ShowFilter.Nada
 		 */
@@ -97,7 +102,7 @@ public class ShowList {
 			}
 		});
 
-		/**
+		/*
 		 * Moves to the previous page
 		 */
 		btnsNav[0].addActionListener(new ActionListener() {
@@ -119,7 +124,7 @@ public class ShowList {
 			}
 		});
 
-		/**
+		/*
 		 * Gets the shows searched for, with or without filter
 		 */
 		btnFilter.addActionListener(new ActionListener() {
@@ -131,18 +136,55 @@ public class ShowList {
 			}
 		});
 
-		/**
+		showInfo.getChkFav().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (showInfo.getChkFav().isSelected())
+					saveFav(showInfo.getPosition());
+				else
+					removeFav(showInfo.getPosition());
+			}
+		});
+
+		/*
 		 * Makes the shows list visible, hiding the show details
 		 */
 		showInfo.getBtnExit().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				int position = showInfo.getPosition();
+				JCheckBox chkFav = showInfo.getChkFav();
+
+				if (chkFav.isSelected()) {
+					if (position == showPanel.getM1pos())
+						chksFav[0].setSelected(true);
+					else if (position == showPanel.getM2pos())
+						chksFav[1].setSelected(true);
+					else if (position == showPanel.getM3pos())
+						chksFav[2].setSelected(true);
+					else if (position == showPanel.getM4pos())
+						chksFav[3].setSelected(true);
+					else if (position == showPanel.getM5pos())
+						chksFav[4].setSelected(true);
+				} else {
+					if (position == showPanel.getM1pos())
+						chksFav[0].setSelected(false);
+					else if (position == showPanel.getM2pos())
+						chksFav[1].setSelected(false);
+					else if (position == showPanel.getM3pos())
+						chksFav[2].setSelected(false);
+					else if (position == showPanel.getM4pos())
+						chksFav[3].setSelected(false);
+					else if (position == showPanel.getM5pos())
+						chksFav[4].setSelected(false);
+				}
+
 				showPanel.setVisible(true);
 				showInfo.setVisible(false);
 			}
 		});
 
-		/**
+		/*
 		 * Makes the show description visible, hiding the shows list
 		 */
 		btnsMore[0].addActionListener(new ActionListener() {
@@ -193,7 +235,7 @@ public class ShowList {
 		 * End
 		 */
 
-		/**
+		/*
 		 * Adds or removes the shows from the favorite list, depending on if it is
 		 * selected or not
 		 */
@@ -204,9 +246,6 @@ public class ShowList {
 					saveFav(showPanel.getM1pos());
 				else
 					removeFav(showPanel.getM1pos());
-
-				for (Show s : usuario.getFavorites())
-					System.out.println(s.getTitle());
 			}
 		});
 
@@ -217,9 +256,6 @@ public class ShowList {
 					saveFav(showPanel.getM2pos());
 				else
 					removeFav(showPanel.getM2pos());
-
-				for (Show s : usuario.getFavorites())
-					System.out.println(s.getTitle());
 			}
 		});
 
@@ -230,9 +266,6 @@ public class ShowList {
 					saveFav(showPanel.getM3pos());
 				else
 					removeFav(showPanel.getM3pos());
-
-				for (Show s : usuario.getFavorites())
-					System.out.println(s.getTitle());
 			}
 		});
 
@@ -243,9 +276,6 @@ public class ShowList {
 					saveFav(showPanel.getM4pos());
 				else
 					removeFav(showPanel.getM4pos());
-
-				for (Show s : usuario.getFavorites())
-					System.out.println(s.getTitle());
 			}
 		});
 
@@ -256,16 +286,13 @@ public class ShowList {
 					saveFav(showPanel.getM5pos());
 				else
 					removeFav(showPanel.getM5pos());
-
-				for (Show s : usuario.getFavorites())
-					System.out.println(s.getTitle());
 			}
 		});
 		/*
 		 * End
 		 */
 
-		/**
+		/*
 		 * Exports the favorites to a csv file with the name of the user in the folder
 		 * "exports"
 		 */
@@ -273,10 +300,11 @@ public class ShowList {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				exportFavs();
+				showPanel.getBtnsFavs()[1].setEnabled(true);
 			}
 		});
 
-		/**
+		/*
 		 * Imports the favorites of the user from a csv file in the folder "exports"
 		 */
 		showPanel.getBtnsFavs()[1].addActionListener(new ActionListener() {
@@ -330,6 +358,7 @@ public class ShowList {
 		int choice = JOptionPane.showOptionDialog(frame, "Elige el separador", null, JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, opt, 0);
 		UserDAO uDao = new UserDAO();
+		boolean export = true;
 
 		switch (choice) {
 		case 0:
@@ -348,24 +377,27 @@ public class ShowList {
 			break;
 
 		default:
-			System.out.println("bitch");
+			export = false;
 		}
-		if (favs.exists()) {
-			try {
-				favs.delete();
-				favs.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
+
+		if (export) {
+			if (favs.exists()) {
+				try {
+					favs.delete();
+					favs.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		updateSrcFavs();
-		for (Show s : usuario.getFavorites()) {
-			String[] line = { s.getShow_id(), s.getTitle() };
-			try {
-				favsWriter.write(line[0] + usuario.getSeparator() + line[1] + "\n");
-				favsWriter.flush();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			updateSrcFavs();
+			for (Show s : usuario.getFavorites()) {
+				String[] line = { s.getShow_id(), s.getTitle() };
+				try {
+					favsWriter.write(line[0] + usuario.getSeparator() + line[1] + "\n");
+					favsWriter.flush();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
@@ -375,14 +407,16 @@ public class ShowList {
 	 * with the new shows from the csv file
 	 */
 	private void importFavs() {
-		ArrayList<Integer> ids = new ArrayList<>();
-		usuario.getFavorites().clear();
-		scWriter.useDelimiter(usuario.getSeparator());
-		while (scWriter.hasNextLine()) {
-			String line = scWriter.nextLine().replace("\"", "");
-			ids.add(Integer.parseInt(line.split(usuario.getSeparator())[0]));
+		if (usuario.getSeparator() != null) {
+			ArrayList<Integer> ids = new ArrayList<>();
+			usuario.getFavorites().clear();
+			scWriter.useDelimiter(usuario.getSeparator());
+			while (scWriter.hasNextLine()) {
+				String line = scWriter.nextLine().replace("\"", "");
+				ids.add(Integer.parseInt(line.split(usuario.getSeparator())[0]));
+			}
+			UserDAO.populateUserFavs(usuario, ids);
+			showPanel.repaintFavs();
 		}
-		UserDAO.populateUserFavs(usuario, ids);
-		showPanel.repaintFavs();
 	}
 }

@@ -2,18 +2,26 @@ package ui.models;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
 import models.Show;
+import models.User;
 import utils.Almacen;
 
 @SuppressWarnings("serial")
 public class ShowInfoPanel extends AbstractJPanel {
-	private Box hbTitle, hbDir, hbRatDur, hbCountFech, hbListed, hbCast, hbDesc, hbExit;
-	private JLabel lblTitle, lblDir, lblRating, lblDur, lblCount, lblFech, lblListed, lblCast, lblDesc;
+	private int position;
+	private User usuario;
+
+	private Box hbTitle, hbDir, hbRatDur, hbCountFech, hbListed, hbCast, hbDesc, hbFav, hbExit;
+	private JLabel lblTitle, lblDir, lblRating, lblDur, lblCount, lblFech, lblListed, lblCast, lblDesc, lblFav;
+	private JCheckBox chkFav;
 	private JButton btnExit;
 
-	public ShowInfoPanel() {
+	public ShowInfoPanel(User usuario) {
+		this.usuario = usuario;
+
 		/*
 		 * Horizontal Boxes are initialized
 		 */
@@ -24,6 +32,7 @@ public class ShowInfoPanel extends AbstractJPanel {
 		hbListed = defaultHB();
 		hbCast = defaultHB();
 		hbDesc = defaultHB();
+		hbFav = defaultHB();
 		hbExit = defaultHB();
 
 		/*
@@ -38,11 +47,17 @@ public class ShowInfoPanel extends AbstractJPanel {
 		lblListed = new JLabel();
 		lblCast = new JLabel();
 		lblDesc = new JLabel();
+		lblFav = new JLabel("Favorito");
 
 		/*
 		 * JButtons are initialized
 		 */
 		btnExit = new JButton("Salir");
+
+		/*
+		 * JCheckBoxes are initialized
+		 */
+		chkFav = new JCheckBox();
 
 		/*
 		 * Horizontal Boxes components are assigned
@@ -65,6 +80,9 @@ public class ShowInfoPanel extends AbstractJPanel {
 
 		addToBox(hbDesc, lblDesc);
 
+		addToBox(hbFav, lblFav);
+		addToBox(hbFav, chkFav);
+
 		addToBox(hbExit, btnExit);
 
 		/*
@@ -85,7 +103,36 @@ public class ShowInfoPanel extends AbstractJPanel {
 		addVS(40);
 		add(hbDesc);
 		addVG();
+		add(hbFav);
+		addVG();
 		add(hbExit);
+	}
+
+	/**
+	 * Retrieves the exit button of the panel
+	 * 
+	 * @return JButton
+	 */
+	public JButton getBtnExit() {
+		return btnExit;
+	}
+
+	/**
+	 * Retrieves the favorites checkbox of the panel
+	 * 
+	 * @return JCheckBox
+	 */
+	public JCheckBox getChkFav() {
+		return chkFav;
+	}
+
+	/**
+	 * Retrieves the position of the show in "Almacen.shows"
+	 * 
+	 * @return Int
+	 */
+	public int getPosition() {
+		return position;
 	}
 
 	/**
@@ -94,7 +141,9 @@ public class ShowInfoPanel extends AbstractJPanel {
 	 * @param i (Int) Position of the show in "Almacen.shows"
 	 */
 	public void updateInfo(int i) {
-		Show s = Almacen.shows.get(i);
+		position = i;
+		Show s = Almacen.shows.get(position);
+
 		lblTitle.setText(s.getTitle());
 		lblDir.setText(s.getDirector());
 		lblRating.setText(s.getRating());
@@ -104,14 +153,14 @@ public class ShowInfoPanel extends AbstractJPanel {
 		lblListed.setText(s.getListed_in());
 		lblCast.setText(s.getCast());
 		lblDesc.setText(s.getDescription());
-	}
 
-	/**
-	 * Retrieves the exit button from the panel
-	 * 
-	 * @return JButton
-	 */
-	public JButton getBtnExit() {
-		return btnExit;
+		boolean found = false;
+		for (Show show : usuario.getFavorites())
+			if (!found)
+				if (show.getShow_id().equals(s.getShow_id())) {
+					chkFav.setSelected(true);
+					found = true;
+				} else
+					chkFav.setSelected(false);
 	}
 }
