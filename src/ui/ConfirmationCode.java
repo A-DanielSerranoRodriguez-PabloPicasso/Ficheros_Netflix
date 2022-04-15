@@ -4,8 +4,6 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -106,9 +104,6 @@ public class ConfirmationCode {
 			public void actionPerformed(ActionEvent e) {
 				UserDAO uDao = new UserDAO();
 				if (uDao.activate(name, Integer.parseInt(panel2.getInput().getText()))) {
-					if (!hasFile(name)) {
-						createFile(name);
-					}
 					panel2.getErrors().setVisible(false);
 					frame.dispose();
 				} else {
@@ -116,29 +111,5 @@ public class ConfirmationCode {
 				}
 			}
 		});
-	}
-
-	/**
-	 * Checks the user has a favorites files in the "exports" folder
-	 * 
-	 * @param username String that represents the username of the user
-	 * @return True if the file exists
-	 */
-	private boolean hasFile(String username) {
-		File file = new File("exports/" + username + ".csv");
-		return file.exists();
-	}
-
-	/**
-	 * Creates a favorites file in the "exports" folder
-	 * 
-	 * @param username String that represents the username of the user
-	 */
-	private void createFile(String username) {
-		try {
-			new File("exports/" + username + ".csv").createNewFile();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 	}
 }

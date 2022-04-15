@@ -7,7 +7,7 @@ CREATE TABLE users (
   username VARCHAR(30) NOT NULL,
   mail VARCHAR(50) NOT NULL,
   passwd TEXT NOT NULL,
-  active TINYINT(1) NOT NULL,
+  active boolean NOT NULL,
   activation_code INT,
   separator_char CHAR(1)
 );
