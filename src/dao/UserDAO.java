@@ -13,7 +13,7 @@ public class UserDAO extends AbstractDAO {
 
 	public UserDAO() {
 		super();
-		statement = this.createStatement();
+		statement = AbstractDAO.createStatement();
 	}
 
 	/**
