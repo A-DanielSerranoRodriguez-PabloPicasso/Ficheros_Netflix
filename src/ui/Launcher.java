@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import dao.ShowsDAO;
 import dao.UserDAO;
 import models.User;
 import ui.models.LoginPanel;
@@ -84,12 +85,24 @@ public class Launcher {
 							if (user != null) {
 								errs[0].setVisible(false);
 								errs[1].setVisible(false);
+
+								createFolder("exports");
 								if (!hasFile(username)) {
 									createFile(username);
 								}
 								frame.dispose();
 								user.setSeparator(uDao.getSeparator(username));
-								new ShowList(user);
+								
+								Waiting waiting = new Waiting();
+								new Thread() {
+									public void run() {
+										waiting.setVisible(true);
+										ShowsDAO.showFiller();
+										waiting.dispose();
+										new ShowList(user);
+									}
+								}.start();
+
 							} else {
 								errs[0].setVisible(false);
 								errs[1].setVisible(true);
@@ -217,6 +230,19 @@ public class Launcher {
 				}
 			}
 		});
+	}
+
+	/**
+	 * Creates the specified folder if it doesn't exists
+	 * 
+	 * @param folder String that represents the folder
+	 */
+	private void createFolder(String folder) {
+		File f = new File(folder);
+
+		if (!f.exists()) {
+			f.mkdir();
+		}
 	}
 
 	/**

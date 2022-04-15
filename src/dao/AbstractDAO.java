@@ -19,12 +19,21 @@ abstract public class AbstractDAO {
 		}
 	}
 
-	protected Connection getConn() {
+	protected static Connection getConn() {
 		return CONN;
 	}
-
-	protected Statement createStatement() {
+	
+	protected static void setConn() {
 		try {
+			CONN = DriverManager.getConnection(DB_URL, USER, PASSWD);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected static Statement createStatement() {
+		try {
+			setConn();
 			return getConn().createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
