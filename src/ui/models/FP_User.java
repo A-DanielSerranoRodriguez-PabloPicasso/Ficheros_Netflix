@@ -8,14 +8,14 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class FpUserPanel extends AbstractJPanel {
+public class FP_User extends AbstractJPanel {
 	private Box vbUser;
 	private Box hbUser, hbUTitle, hbUText, hbButtons;
 	private JLabel lblTitle;
 	private JTextField txfUser;
 	private JButton btnCancel, btnProceed;
 
-	public FpUserPanel() {
+	public FP_User() {
 		/**
 		 * Vertical Boxes are initialized
 		 */

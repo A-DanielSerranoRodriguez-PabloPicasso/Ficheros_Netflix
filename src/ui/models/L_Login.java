@@ -9,19 +9,18 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class LoginPanel extends AbstractJPanel {
-	private Box hbTitle, hbName, hbPasswd, hbError, hbButtons;
+public class L_Login extends AbstractJPanel {
+	private Box hbName, hbPasswd, hbError, hbButtons;
 	private Box vbData;
-	private JLabel lblTitle, lblName, lblPasswd, lblError, lblEmpty;
+	private JLabel lblName, lblPasswd, lblError, lblEmpty;
 	private JTextField txtName;
 	private JPasswordField pwdPasswd;
 	private JButton btnRegister, btnLogin, btnVerify, btnForgotPasswd;
 
-	public LoginPanel() {
+	public L_Login() {
 		/**
 		 * Horizontal Boxes are initialized
 		 */
-		hbTitle = defaultHB();
 		hbName = defaultHB();
 		hbPasswd = defaultHB();
 		hbButtons = defaultHB();
@@ -35,7 +34,6 @@ public class LoginPanel extends AbstractJPanel {
 		/**
 		 * JLabels are initialized
 		 */
-		lblTitle = new JLabel("Nutflix");
 		lblName = new JLabel("Nombre: ");
 		lblPasswd = new JLabel("Contra: ");
 		lblError = new JLabel("Usuario o contra incorrectos");
@@ -71,8 +69,6 @@ public class LoginPanel extends AbstractJPanel {
 		/**
 		 * The components of the Horizontal Boxes are assigned
 		 */
-		addToBox(hbTitle, lblTitle);
-
 		addToBox(hbName, lblName);
 		addToBox(hbName, Box.createHorizontalStrut(20));
 		addToBox(hbName, txtName);
@@ -103,8 +99,6 @@ public class LoginPanel extends AbstractJPanel {
 		/**
 		 * The components of the JFrame are assigned
 		 */
-		addVG();
-		add(hbTitle);
 		addVG();
 		add(vbData);
 		add(btnForgotPasswd);

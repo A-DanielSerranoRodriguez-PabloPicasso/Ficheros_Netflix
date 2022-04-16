@@ -32,8 +32,9 @@ public class Waiting {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+		frame.setTitle("Netflix - Construyendo");
 		frame.setVisible(false);
-		
+
 		setUIcomponents();
 	}
 
@@ -50,11 +51,11 @@ public class Waiting {
 		verticalGlue_2 = Box.createVerticalGlue();
 		frame.getContentPane().add(verticalGlue_2);
 	}
-	
+
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
 	}
-	
+
 	public void dispose() {
 		frame.dispose();
 	}

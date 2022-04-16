@@ -9,15 +9,15 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import dao.UserDAO;
-import ui.models.FpPasswdPanel;
-import ui.models.FpUserPanel;
+import ui.models.FP_Passwd;
+import ui.models.FP_User;
 import utils.EmailHelper;
 
 public class ForgotPasswd {
 
 	private JFrame frame;
-	private FpUserPanel panel1;
-	private FpPasswdPanel panel2;
+	private FP_User panel1;
+	private FP_Passwd panel2;
 	private String name, mail;
 
 	/**
@@ -35,6 +35,7 @@ public class ForgotPasswd {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		frame.setTitle("Netflix - Recuperar Contrasenya");
 		frame.setVisible(true);
 
 		setUIcomponents();
@@ -45,8 +46,8 @@ public class ForgotPasswd {
 	 * Sets the panels of the frame
 	 */
 	private void setUIcomponents() {
-		panel1 = new FpUserPanel();
-		panel2 = new FpPasswdPanel();
+		panel1 = new FP_User();
+		panel2 = new FP_Passwd();
 		frame.getContentPane().add(panel1);
 		frame.getContentPane().add(panel2);
 	}
@@ -130,7 +131,7 @@ public class ForgotPasswd {
 					int rndm = (int) ((Math.random() * 100000) + 1);
 					uDao.updatePasswd(name, new String(panel2.getPasswd()));
 					emailHelper.verificationMessage(mail, rndm);
-					new ConfirmationCode(name, mail, rndm);
+					new ConfirmCode(name, mail, rndm);
 					frame.dispose();
 
 				} else

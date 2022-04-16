@@ -8,13 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class ConfirmPanel2 extends AbstractJPanel {
+public class CC_Panel2 extends AbstractJPanel {
 	private Box hbText, hbInput, hbButtons, hbErrors;
 	private JLabel lblText, lblError;
 	private JTextField txfText;
 	private JButton btnResend, btnConfirm;
 
-	public ConfirmPanel2(String name) {
+	public CC_Panel2(String name) {
 		/**
 		 * Horizontal Boxes are initialized
 		 */

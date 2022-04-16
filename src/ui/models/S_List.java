@@ -19,7 +19,7 @@ import utils.Almacen;
 import utils.ShowFilter;
 
 @SuppressWarnings("serial")
-public class ShowListPanel extends AbstractJPanel {
+public class S_List extends AbstractJPanel {
 	private User user;
 	private ShowsDAO sDao;
 	private String textFilter;
@@ -38,7 +38,7 @@ public class ShowListPanel extends AbstractJPanel {
 	private JButton btnMore1, btnMore2, btnMore3, btnMore4, btnMore5;
 	private JCheckBox chkFav1, chkFav2, chkFav3, chkFav4, chkFav5;
 
-	public ShowListPanel(User user) {
+	public S_List(User user) {
 		ImageIcon plus = new ImageIcon("resources/img/plus.png");
 
 		sDao = new ShowsDAO();
@@ -155,15 +155,19 @@ public class ShowListPanel extends AbstractJPanel {
 		 */
 		// ## Added to a Vertical Box
 		addToBox(hbNav, btnPreviousP);
+		addToBox(hbNav, defaultHS(80));
 		addToBox(hbNav, lblTitle);
+		addToBox(hbNav, defaultHS(80));
 		addToBox(hbNav, btnNextP);
 
 		addToBox(hbOpt, lblFilter);
 		addToBox(hbOpt, jcbFilter);
+		addToBox(hbOpt, defaultHS(40));
 		addToBox(hbOpt, txtFilter);
 		addToBox(hbOpt, btnFilter);
 
 		addToBox(hbFavs, btnExportFavs);
+		addToBox(hbFavs, defaultHS(10));
 		addToBox(hbFavs, btnImportFavs);
 		// ##
 
@@ -178,6 +182,12 @@ public class ShowListPanel extends AbstractJPanel {
 		addToBox(hbS3M, btnMore3);
 		addToBox(hbS4M, btnMore4);
 		addToBox(hbS5M, btnMore5);
+
+		addToBox(hbS1M, defaultHS(20));
+		addToBox(hbS2M, defaultHS(20));
+		addToBox(hbS3M, defaultHS(20));
+		addToBox(hbS4M, defaultHS(20));
+		addToBox(hbS5M, defaultHS(20));
 
 		addToBox(hbS1M, new JLabel("Favorito:"));
 		addToBox(hbS2M, new JLabel("Favorito:"));
@@ -204,7 +214,9 @@ public class ShowListPanel extends AbstractJPanel {
 		 * Vertical Boxes components are assigned
 		 */
 		addToBox(vbUpper, hbNav);
+		addToBox(vbUpper, defaultVS(20));
 		addToBox(vbUpper, hbOpt);
+		addToBox(vbUpper, defaultVS(20));
 		addToBox(vbUpper, hbFavs);
 
 		addToBox(vbShow1, hbS1T);
@@ -212,12 +224,24 @@ public class ShowListPanel extends AbstractJPanel {
 		addToBox(vbShow3, hbS3T);
 		addToBox(vbShow4, hbS4T);
 		addToBox(vbShow5, hbS5T);
+		
+		addToBox(vbShow1, defaultVS(20));
+		addToBox(vbShow2, defaultVS(20));
+		addToBox(vbShow3, defaultVS(20));
+		addToBox(vbShow4, defaultVS(20));
+		addToBox(vbShow5, defaultVS(20));
 
 		addToBox(vbShow1, hbS1D);
 		addToBox(vbShow2, hbS2D);
 		addToBox(vbShow3, hbS3D);
 		addToBox(vbShow4, hbS4D);
 		addToBox(vbShow5, hbS5D);
+
+		addToBox(vbShow1, defaultVS(20));
+		addToBox(vbShow2, defaultVS(20));
+		addToBox(vbShow3, defaultVS(20));
+		addToBox(vbShow4, defaultVS(20));
+		addToBox(vbShow5, defaultVS(20));
 
 		addToBox(vbShow1, hbS1M);
 		addToBox(vbShow2, hbS2M);

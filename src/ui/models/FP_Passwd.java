@@ -8,13 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 
 @SuppressWarnings("serial")
-public class FpPasswdPanel extends AbstractJPanel {
+public class FP_Passwd extends AbstractJPanel {
 	private Box hbTitle, hbSubTitle, hbPasswd, hbPasswdConfirm, hbButtons;
 	private JLabel lblTitle, lblSubTitle, lblPasswd, lblPasswdConfirm;
 	private JPasswordField pswPasswd, pswPasswdConfirm;
 	private JButton btnBack, btnConfirm, btnConfValid;
 
-	public FpPasswdPanel() {
+	public FP_Passwd() {
 		/**
 		 * Horizontal Boxes are initialized
 		 */

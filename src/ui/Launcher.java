@@ -15,16 +15,16 @@ import javax.swing.JOptionPane;
 import dao.ShowsDAO;
 import dao.UserDAO;
 import models.User;
-import ui.models.LoginPanel;
-import ui.models.RegisterPanel;
+import ui.models.L_Login;
+import ui.models.L_Register;
 import utils.EmailHelper;
 import utils.Encrypter;
 
 public class Launcher {
 
 	private JFrame frame;
-	private LoginPanel loginPanel;
-	private RegisterPanel registerPanel;
+	private L_Login loginPanel;
+	private L_Register registerPanel;
 
 	/**
 	 * Create the application.
@@ -42,6 +42,7 @@ public class Launcher {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		frame.setTitle("Netflix");
 		frame.setVisible(true);
 
 		setUIcomponents();
@@ -52,8 +53,8 @@ public class Launcher {
 	 * Sets the panels of the frame
 	 */
 	private void setUIcomponents() {
-		loginPanel = new LoginPanel();
-		registerPanel = new RegisterPanel();
+		loginPanel = new L_Login();
+		registerPanel = new L_Register();
 		frame.getContentPane().add(loginPanel);
 		frame.getContentPane().add(registerPanel);
 	}
@@ -99,7 +100,7 @@ public class Launcher {
 										waiting.setVisible(true);
 										ShowsDAO.showFiller();
 										waiting.dispose();
-										new ShowList(user);
+										new Shows(user);
 									}
 								}.start();
 
@@ -146,7 +147,7 @@ public class Launcher {
 				User user = uDao.login(text, passwd);
 
 				if (user != null) {
-					new ConfirmationCode(user.getName(), user.getEmail(), uDao.getAC("username", user.getName()));
+					new ConfirmCode(user.getName(), user.getEmail(), uDao.getAC("username", user.getName()));
 				}
 
 				lBtns[2].setVisible(false);
@@ -212,7 +213,7 @@ public class Launcher {
 							}
 
 							new EmailHelper().verificationMessage(userData[1], rndm);
-							new ConfirmationCode(userData[0], userData[1], rndm);
+							new ConfirmCode(userData[0], userData[1], rndm);
 
 							registerPanel.setVisible(false);
 							loginPanel.setVisible(true);

@@ -10,7 +10,7 @@ import models.User;
 import utils.Almacen;
 
 @SuppressWarnings("serial")
-public class ShowInfoPanel extends AbstractJPanel {
+public class S_Info extends AbstractJPanel {
 	private int position;
 	private User usuario;
 
@@ -19,7 +19,7 @@ public class ShowInfoPanel extends AbstractJPanel {
 	private JCheckBox chkFav;
 	private JButton btnExit;
 
-	public ShowInfoPanel(User usuario) {
+	public S_Info(User usuario) {
 		this.usuario = usuario;
 
 		/*
@@ -106,6 +106,7 @@ public class ShowInfoPanel extends AbstractJPanel {
 		add(hbFav);
 		addVG();
 		add(hbExit);
+		addVG();
 	}
 
 	/**

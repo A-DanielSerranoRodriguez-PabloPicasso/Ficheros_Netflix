@@ -11,20 +11,20 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import dao.UserDAO;
-import ui.models.ConfirmPanel1;
-import ui.models.ConfirmPanel2;
+import ui.models.CC_Panel1;
+import ui.models.CC_Panel2;
 import utils.EmailHelper;
 
-public class ConfirmationCode {
+public class ConfirmCode {
 	private JFrame frame;
-	private ConfirmPanel1 panel1;
-	private ConfirmPanel2 panel2;
+	private CC_Panel1 panel1;
+	private CC_Panel2 panel2;
 	private String name, mail;
 
 	/**
 	 * Create the application.
 	 */
-	public ConfirmationCode(String name, String mail, int code) {
+	public ConfirmCode(String name, String mail, int code) {
 		this.name = name;
 		this.mail = mail;
 
@@ -40,6 +40,7 @@ public class ConfirmationCode {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		frame.setTitle("Netflix - Confirmar Codigo");
 		frame.setVisible(true);
 
 		setUIcomponents();
@@ -49,8 +50,8 @@ public class ConfirmationCode {
 	 * Sets the panels of the frame
 	 */
 	private void setUIcomponents() {
-		panel1 = new ConfirmPanel1(mail);
-		panel2 = new ConfirmPanel2(name);
+		panel1 = new CC_Panel1(mail);
+		panel2 = new CC_Panel2(name);
 		frame.getContentPane().add(panel1);
 		frame.getContentPane().add(panel2);
 

@@ -21,25 +21,25 @@ import javax.swing.JOptionPane;
 import dao.UserDAO;
 import models.Show;
 import models.User;
-import ui.models.ShowInfoPanel;
-import ui.models.ShowListPanel;
+import ui.models.S_Info;
+import ui.models.S_List;
 import utils.Almacen;
 import utils.ShowFilter;
 
-public class ShowList {
+public class Shows {
 	private User usuario;
 	private File favs;
 	private FileWriter favsWriter;
 	private Scanner scWriter;
 
 	private JFrame frame;
-	private ShowListPanel showPanel;
-	private ShowInfoPanel showInfo;
+	private S_List showPanel;
+	private S_Info showInfo;
 
 	/**
 	 * Create the application.
 	 */
-	public ShowList(User usuario) {
+	public Shows(User usuario) {
 		this.usuario = usuario;
 		favs = new File("exports/" + this.usuario.getName() + ".csv");
 		try {
@@ -57,10 +57,11 @@ public class ShowList {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setMinimumSize(new Dimension(1200, 800));
+		frame.setMinimumSize(new Dimension(1400, 1000));
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		frame.setTitle("Netlix - Shows");
 		frame.setVisible(true);
 
 		setUIcomponents();
@@ -71,8 +72,8 @@ public class ShowList {
 	 * Sets the panels of the frame
 	 */
 	private void setUIcomponents() {
-		this.showPanel = new ShowListPanel(usuario);
-		this.showInfo = new ShowInfoPanel(usuario);
+		this.showPanel = new S_List(usuario);
+		this.showInfo = new S_Info(usuario);
 		frame.getContentPane().add(showPanel, "name_14215655555075");
 		frame.getContentPane().add(showInfo);
 	}

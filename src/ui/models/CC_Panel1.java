@@ -5,13 +5,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
-public class ConfirmPanel1 extends AbstractJPanel {
+public class CC_Panel1 extends AbstractJPanel {
 	private JLabel lblTitle, lblText1, lblText2;
 	private JButton btnVerify, btnResend;
 	private Box hbTitle, hbTexts, hbText1, hbText2, hbButtons;
 	private Box vbTexts;
 
-	public ConfirmPanel1(String mail) {
+	public CC_Panel1(String mail) {
 		/**
 		 * Horizontal Boxes are initialized
 		 */

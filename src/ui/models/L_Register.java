@@ -9,7 +9,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class RegisterPanel extends AbstractJPanel {
+public class L_Register extends AbstractJPanel {
 	private Box hbTitle, hbName, hbMail, hbPasswd, hbConfirmPwd, hbError, hbButtons;
 	private Box vbData;
 	private JLabel lblTitle, lblName, lblMail, lblPasswd, lblConfirmPwd, lblEmpty, lblUserExists, lblPasswdNotMatch;
@@ -17,7 +17,7 @@ public class RegisterPanel extends AbstractJPanel {
 	private JPasswordField pwdPasswd, pwdConfirmPwd;
 	private JButton btnCancel, btnRegister;
 
-	public RegisterPanel() {
+	public L_Register() {
 		/**
 		 * Horizontal Boxes are initialized
 		 */
